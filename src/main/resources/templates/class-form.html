@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html(content=~{::section})}">
+<body>
+<section>
+    <h2 th:text="${classroom.id == null ? 'Thêm Lớp học' : 'Sửa Lớp học'}"></h2>
+    <hr>
+    <form th:action="@{/classes/save}" th:object="${classroom}" method="post" class="col-md-6">
+        <input type="hidden" th:field="*{id}">
+        
+        <div class="mb-3">
+            <label for="classCode" class="form-label">Mã lớp</label>
+            <input type="text" class="form-control" id="classCode" th:field="*{classCode}" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="className" class="form-label">Tên lớp</label>
+            <input type="text" class="form-control" id="className" th:field="*{className}" required>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Lưu</button>
+        <a th:href="@{/classes}" class="btn btn-secondary">Hủy</a>
+    </form>
+</section>
+</body>
+</html>

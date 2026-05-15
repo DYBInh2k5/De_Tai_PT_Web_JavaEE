@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html(content=~{::section})}">
+<body>
+<section>
+    <h2 th:text="${student.id == null ? 'Thêm Sinh viên' : 'Sửa Sinh viên'}"></h2>
+    <hr>
+    <form th:action="@{/students/save}" th:object="${student}" method="post" class="col-md-6">
+        <input type="hidden" th:field="*{id}">
+        
+        <div class="mb-3">
+            <label for="studentCode" class="form-label">Mã sinh viên</label>
+            <input type="text" class="form-control" id="studentCode" th:field="*{studentCode}" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Họ tên</label>
+            <input type="text" class="form-control" id="fullName" th:field="*{fullName}" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="classroom" class="form-label">Lớp học</label>
+            <select class="form-select" id="classroom" th:field="*{classroom}" required>
+                <option value="">-- Chọn lớp học --</option>
+                <option th:each="c : ${classes}" 
+                        th:value="${c.id}" 
+                        th:text="${c.className}"></option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Lưu</button>
+        <a th:href="@{/students}" class="btn btn-secondary">Hủy</a>
+    </form>
+</section>
+</body>
+</html>

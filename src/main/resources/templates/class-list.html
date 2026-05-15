@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html(content=~{::section})}">
+<body>
+<section>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Danh sách Lớp học</h2>
+        <a th:href="@{/classes/add}" class="btn btn-primary">Thêm Lớp mới</a>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Mã lớp</th>
+            <th>Tên lớp</th>
+            <th>Số SV</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="class : ${classes}">
+            <td th:text="${class.id}"></td>
+            <td th:text="${class.classCode}"></td>
+            <td th:text="${class.className}"></td>
+            <td>
+                <span class="badge bg-info text-dark" th:text="${class.students != null ? class.students.size() : 0}"></span>
+            </td>
+            <td>
+                <a th:href="@{/classes/{id}/students(id=${class.id})}" class="btn btn-sm btn-info">Xem SV</a>
+                <a th:href="@{/classes/edit/{id}(id=${class.id})}" class="btn btn-sm btn-warning">Sửa</a>
+                <a th:href="@{/classes/delete/{id}(id=${class.id})}" class="btn btn-sm btn-danger" 
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa lớp này?')">Xóa</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(classes)}">
+            <td colspan="5" class="text-center">Chưa có lớp học nào.</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
