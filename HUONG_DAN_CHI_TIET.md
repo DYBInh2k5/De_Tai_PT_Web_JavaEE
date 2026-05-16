@@ -33,7 +33,18 @@
 
 ## 3. Thiết kế hệ thống
 
-### 3.1. Sơ đồ Cơ sở dữ liệu (SQL Server)
+### 3.1. Phân biệt Mô hình Quan hệ vs Mô hình Đối tượng
+- **Mô hình Quan hệ (Relational Model - SQL Server):**
+    - Dữ liệu lưu trong bảng (tables), hàng (rows) và cột (columns).
+    - Kết nối thông qua Khóa ngoại (Foreign Keys).
+    - Không hỗ trợ kế thừa, đa hình.
+- **Mô hình Đối tượng (Object Model - Java/JPA):**
+    - Dữ liệu lưu trong Đối tượng (Objects), Thuộc tính (Attributes).
+    - Kết nối thông qua Tham chiếu đối tượng (Object References).
+    - Hỗ trợ đầy đủ tính kế thừa, bao đóng, đa hình.
+- **ORM (JPA/Hibernate):** Là kỹ thuật ánh xạ giữa hai mô hình này, giúp lập trình viên thao tác với DB bằng ngôn ngữ hướng đối tượng.
+
+### 3.2. Sơ đồ Cơ sở dữ liệu (SQL Server)
 - **Bảng Classes**: Lưu thông tin lớp học.
     - `id` (BIGINT, PK): Khóa chính tự tăng.
     - `class_code` (NVARCHAR): Mã lớp (Duy nhất).
@@ -83,19 +94,25 @@ private Classroom classroom;
 
 ---
 
-## 5. Hướng dẫn sử dụng & Cài đặt
+## 5. Hướng dẫn sử dụng & Cài đặt (Trên IntelliJ IDEA)
 
 ### Bước 1: Khởi tạo Database
 - Mở SQL Server Management Studio.
 - Chạy toàn bộ script trong file `init-db.sql` đi kèm.
 
-### Bước 2: Cấu hình ứng dụng
+### Bước 2: Mở dự án trong IntelliJ IDEA
+- Chọn **File > Open**, trỏ đến thư mục `ttjavaee`.
+- Chọn file `pom.xml` và chọn **Open as Project**.
+- Đợi IntelliJ tải xong các thư viện Maven (góc dưới bên phải).
+
+### Bước 3: Cấu hình ứng dụng
 - Mở file `src/main/resources/application.properties`.
 - Chỉnh sửa mật khẩu SQL Server của bạn tại dòng:
   `spring.datasource.password=Mật_Khẩu_Của_Bạn`
 
-### Bước 3: Chạy ứng dụng
-- Chạy class `ClassroomManagementApplication.java` từ IDE.
+### Bước 4: Chạy ứng dụng
+- Tìm file `ClassroomManagementApplication.java` trong `src/main/java/com/ttjavaee/classroom/`.
+- Nhấn chuột phải vào file hoặc biểu tượng tam giác xanh và chọn **Run**.
 - Truy cập trình duyệt: `http://localhost:8080`.
 
 ---
