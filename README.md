@@ -2,7 +2,11 @@
 
 Dự án này là bản demo tìm hiểu về quan hệ One-to-Many và Many-to-One trong JPA/Hibernate sử dụng Spring Boot và SQL Server.
 
-**Tài liệu chi tiết hơn có tại:** [HUONG_DAN_CHI_TIET.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_CHI_TIET.md)
+### 📚 Tài liệu hướng dẫn chi tiết:
+1.  **[HUONG_DAN_CHI_TIET.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_CHI_TIET.md)**: Tổng quan kỹ thuật và kiến thức JPA.
+2.  **[HUONG_DAN_BAO_CAO.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_BAO_CAO.md)**: Cấu trúc và nội dung chi tiết cho file Báo cáo (.docx/.pdf).
+3.  **[HUONG_DAN_SLIDE.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_SLIDE.md)**: Gợi ý nội dung cho từng Slide thuyết trình (.pptx).
+4.  **[HUONG_DAN_NOP_BAI.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_NOP_BAI.md)**: Checklist các file cần nộp và cách đóng gói bài làm.
 
 ## Công nghệ sử dụng
 - Java 17
