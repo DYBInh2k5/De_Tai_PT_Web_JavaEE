@@ -13,19 +13,29 @@ target/
 *.rar
 hs_err_pid*
 replay_pid*
-.settings/
-.project
-.classpath
-.factorypath
+
+# IntelliJ IDEA
 .idea/
 *.iws
 *.iml
 *.ipr
-.vscode/
-bin/
 out/
+gen/
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VS Code
+.vscode/
+
+# OS files
 .DS_Store
-.env
+Thumbs.db
+
+# Maven
 .mvn/
 mvnw
 mvnw.cmd
