@@ -1,46 +1,136 @@
-# Dự án Quản lý Lớp học và Sinh viên (JPA One-to-Many & Many-to-One)
+# Quản lý Lớp học & Sinh viên
+### Đề tài 07: One-to-Many và Many-to-One trong JPA/Hibernate
 
-Dự án này là bản demo tìm hiểu về quan hệ One-to-Many và Many-to-One trong JPA/Hibernate sử dụng Spring Boot và SQL Server.
+---
 
-### 📚 Tài liệu hướng dẫn chi tiết:
-1.  **[HUONG_DAN_CHI_TIET.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_CHI_TIET.md)**: Tổng quan kỹ thuật và kiến thức JPA.
-2.  **[HUONG_DAN_BAO_CAO.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_BAO_CAO.md)**: Cấu trúc và nội dung chi tiết cho file Báo cáo (.docx/.pdf).
-3.  **[HUONG_DAN_SLIDE.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_SLIDE.md)**: Gợi ý nội dung cho từng Slide thuyết trình (.pptx).
-4.  **[HUONG_DAN_NOP_BAI.md](file:///d:/Downloads/ttjavaee/HUONG_DAN_NOP_BAI.md)**: Checklist các file cần nộp và cách đóng gói bài làm.
+## �️ Công nghệ sử dụng
 
-## Công nghệ sử dụng
-- Java 17
-- Spring Boot 3.2.5
-- Spring Data JPA
-- Thymeleaf (Giao diện)
-- Bootstrap 5 (CSS)
-- SQL Server (Cơ sở dữ liệu)
-- Lombok
+| Công nghệ | Phiên bản |
+|-----------|-----------|
+| Java | 17 |
+| Spring Boot | 3.2.5 |
+| Spring Data JPA / Hibernate | (theo Spring Boot) |
+| SQL Server | 2019+ |
+| Thymeleaf | (theo Spring Boot) |
+| Bootstrap | 5.3.0 |
+| Lombok | (theo Spring Boot) |
+| Maven | 3.6+ |
 
-## Cấu trúc quan hệ
-- **Classroom (Một)**: Một lớp có thể có nhiều sinh viên (`@OneToMany`).
-- **Student (Nhiều)**: Nhiều sinh viên thuộc về một lớp (`@ManyToOne`).
+---
 
-## Hướng dẫn cài đặt và chạy
-1. **Cơ sở dữ liệu**:
-   - Mở SQL Server Management Studio (SSMS).
-   - Chạy file `init-db.sql` để tạo database `ClassroomDB` và dữ liệu mẫu.
-   
-2. **Cấu hình**:
-   - Mở file `src/main/resources/application.properties`.
-   - Cập nhật `spring.datasource.password` theo mật khẩu tài khoản `sa` của bạn.
+## ⚙️ Yêu cầu môi trường
 
-3. **Chạy ứng dụng**:
-   - Sử dụng IDE (IntelliJ IDEA, Eclipse, VS Code) để chạy class `ClassroomManagementApplication`.
-   - Hoặc dùng terminal: `mvn spring-boot:run`.
+- **JDK 17** trở lên
+- **SQL Server** đang chạy trên `localhost:1433`
+- **IntelliJ IDEA** (Ultimate hoặc Community với plugin Spring)
+- **Maven** (đã tích hợp trong IntelliJ)
 
-4. **Truy cập**:
-   - Mở trình duyệt và truy cập: `http://localhost:8080/`.
+---
 
-## Các chức năng chính
-- Xem danh sách lớp học và số lượng sinh viên mỗi lớp.
-- Thêm, sửa, xóa lớp học.
-- Xem danh sách sinh viên theo từng lớp.
-- Quản lý sinh viên (CRUD).
-- Lọc sinh viên theo lớp.
-- Gán lớp cho sinh viên khi thêm mới hoặc chỉnh sửa.
+## 🚀 Hướng dẫn chạy chương trình
+
+### Bước 1: Tạo Database
+
+1. Mở **SQL Server Management Studio (SSMS)** hoặc **Azure Data Studio**
+2. Kết nối vào SQL Server local
+3. Mở file `init-db.sql` và chạy toàn bộ script
+4. Kiểm tra database `ClassroomDB` đã được tạo với dữ liệu mẫu
+
+### Bước 2: Cấu hình kết nối Database
+
+Mở file `src/main/resources/application.properties` và sửa thông tin kết nối:
+
+```properties
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=ClassroomDB;encrypt=true;trustServerCertificate=true
+spring.datasource.username=sa
+spring.datasource.password=<MẬT_KHẨU_SQL_SERVER_CỦA_BẠN>
+```
+
+> ⚠️ Thay `<MẬT_KHẨU_SQL_SERVER_CỦA_BẠN>` bằng mật khẩu thực tế của tài khoản `sa`
+
+### Bước 3: Chạy ứng dụng trong IntelliJ IDEA
+
+**Cách 1 - Qua IntelliJ:**
+1. Mở project trong IntelliJ IDEA
+2. Chờ Maven tải dependencies (lần đầu có thể mất vài phút)
+3. Tìm file `ClassroomManagementApplication.java`
+4. Click nút ▶️ **Run** hoặc nhấn `Shift + F10`
+
+**Cách 2 - Qua Maven:**
+```bash
+cd De_Tai_PT_Web_JavaEE
+mvn spring-boot:run
+```
+
+### Bước 4: Truy cập ứng dụng
+
+Mở trình duyệt và vào: **http://localhost:8080**
+
+---
+
+## 📋 Chức năng
+
+| Chức năng | URL |
+|-----------|-----|
+| Trang chủ (redirect) | `GET /` |
+| Danh sách lớp học | `GET /classes` |
+| Thêm lớp học | `GET /classes/add` |
+| Sửa lớp học | `GET /classes/edit/{id}` |
+| Xóa lớp học | `GET /classes/delete/{id}` |
+| Xem sinh viên theo lớp | `GET /classes/{id}/students` |
+| Danh sách sinh viên | `GET /students` |
+| Lọc sinh viên theo lớp | `GET /students?classId={id}` |
+| Thêm sinh viên | `GET /students/add` |
+| Sửa sinh viên | `GET /students/edit/{id}` |
+| Xóa sinh viên | `GET /students/delete/{id}` |
+
+---
+
+## 🗂️ Cấu trúc Project
+
+```
+src/main/java/com/ttjavaee/classroom/
+├── ClassroomManagementApplication.java   ← Main class
+├── controller/
+│   ├── HomeController.java               ← Redirect / → /classes
+│   ├── ClassroomController.java          ← CRUD lớp học
+│   └── StudentController.java            ← CRUD sinh viên
+├── entity/
+│   ├── Classroom.java                    ← Entity lớp học (@OneToMany)
+│   └── Student.java                      ← Entity sinh viên (@ManyToOne)
+├── repository/
+│   ├── ClassroomRepository.java          ← JPA Repository lớp học
+│   └── StudentRepository.java            ← JPA Repository sinh viên
+└── service/
+    ├── ClassroomService.java             ← Business logic lớp học
+    └── StudentService.java               ← Business logic sinh viên
+
+src/main/resources/
+├── application.properties               ← Cấu hình DB, JPA, server
+└── templates/
+    ├── layout.html                       ← Navbar fragment dùng chung
+    ├── class-list.html                   ← Danh sách lớp học
+    ├── class-form.html                   ← Form thêm/sửa lớp
+    ├── class-students.html               ← Sinh viên theo lớp
+    ├── student-list.html                 ← Danh sách sinh viên
+    └── student-form.html                 ← Form thêm/sửa sinh viên
+```
+
+---
+
+## 🔗 Quan hệ JPA
+
+```
+Classroom (1) ←──────────── (N) Student
+   @OneToMany                    @ManyToOne
+   mappedBy="classroom"          @JoinColumn(name="class_id")
+   cascade=ALL
+```
+
+---
+
+## ❗ Lưu ý
+
+- `spring.jpa.hibernate.ddl-auto=update` sẽ tự tạo/cập nhật bảng theo Entity
+- Nếu đã chạy `init-db.sql`, Hibernate sẽ không tạo lại bảng
+- Khi xóa lớp học, `class_id` của sinh viên trong lớp đó sẽ được set `NULL` (do `ON DELETE SET NULL`)
