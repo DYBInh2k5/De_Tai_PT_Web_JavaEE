@@ -22,6 +22,8 @@ public class Classroom {
     @Column(nullable = false)
     private String className;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // cascade không dùng REMOVE vì DB dùng ON DELETE SET NULL
+    // Dùng PERSIST + MERGE để save/update lan truyền, nhưng xóa lớp không xóa sinh viên
+    @OneToMany(mappedBy = "classroom", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<Student> students;
 }

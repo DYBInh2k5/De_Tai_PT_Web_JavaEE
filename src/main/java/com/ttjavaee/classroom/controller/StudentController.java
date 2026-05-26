@@ -43,14 +43,18 @@ public class StudentController {
     }
 
     // Lưu sinh viên (thêm mới hoặc cập nhật)
-    // classroomId được gửi riêng từ form select
+    // classroomId được gửi riêng từ form select, có thể null nếu chọn "Không có lớp"
     @PostMapping("/save")
     public String saveStudent(
             @ModelAttribute("student") Student student,
-            @RequestParam("classroomId") Long classroomId) {
-        // Gán lớp học cho sinh viên dựa trên classroomId từ form
-        Classroom classroom = classroomService.getClassroomById(classroomId);
-        student.setClassroom(classroom);
+            @RequestParam(value = "classroomId", required = false) Long classroomId) {
+        // Nếu classroomId null (chọn "Không có lớp") thì set classroom = null
+        if (classroomId != null) {
+            Classroom classroom = classroomService.getClassroomById(classroomId);
+            student.setClassroom(classroom);
+        } else {
+            student.setClassroom(null);
+        }
         studentService.saveStudent(student);
         return "redirect:/students";
     }

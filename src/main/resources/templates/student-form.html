@@ -41,9 +41,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="classroomId" class="form-label fw-semibold">Lớp học <span class="text-danger">*</span></label>
-                            <select class="form-select" id="classroomId" name="classroomId" required>
-                                <option value="">-- Chọn lớp học --</option>
+                            <label for="classroomId" class="form-label fw-semibold">Lớp học</label>
+                            <select class="form-select" id="classroomId" name="classroomId">
+                                <option value="">-- Chưa có lớp --</option>
                                 <option th:each="c : ${classes}"
                                         th:value="${c.id}"
                                         th:text="${c.classCode + ' - ' + c.className}"
