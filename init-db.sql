@@ -1,27 +1,27 @@
 -- ============================================================
--- Script khởi tạo Database cho ứng dụng Quản lý Lớp học
--- Chạy trong SSMS / Azure Data Studio TRƯỚC lần chạy app đầu tiên
+-- Script khoi tao Database: Quan ly Lop hoc & Sinh vien
+-- De tai 07: One-to-Many va Many-to-One trong JPA/Hibernate
 --
--- Lưu ý (V1.2): Ứng dụng cũng dùng Flyway (db/migration/).
--- Nếu DB đã có bảng từ script này, Flyway tự baseline — không ghi đè dữ liệu.
+-- HUONG DAN: Chay file nay trong SSMS truoc khi khoi dong ung dung
+-- 1. Mo SSMS -> New Query -> mo file nay -> Execute (F5)
 -- ============================================================
 
--- 1. Tạo Database nếu chưa tồn tại
+-- 1. Tao Database
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'ClassroomDB')
 BEGIN
     CREATE DATABASE ClassroomDB;
-    PRINT 'Database ClassroomDB đã được tạo.';
+    PRINT 'Database ClassroomDB da duoc tao.';
 END
 ELSE
 BEGIN
-    PRINT 'Database ClassroomDB đã tồn tại.';
+    PRINT 'Database ClassroomDB da ton tai.';
 END
 GO
 
 USE ClassroomDB;
 GO
 
--- 2. Tạo bảng Classes (Lớp học)
+-- 2. Tao bang Classes (Lop hoc)
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Classes]') AND type = N'U')
 BEGIN
     CREATE TABLE Classes (
@@ -29,12 +29,13 @@ BEGIN
         class_code NVARCHAR(50)  NOT NULL UNIQUE,
         class_name NVARCHAR(255) NOT NULL
     );
-    PRINT 'Bảng Classes đã được tạo.';
+    PRINT 'Bang Classes da duoc tao.';
 END
 GO
 
--- 3. Tạo bảng Students (Sinh viên)
--- class_id cho phép NULL để sinh viên có thể chưa được gán lớp
+-- 3. Tao bang Students (Sinh vien)
+-- class_id cho phep NULL: sinh vien co the chua duoc gan lop
+-- ON DELETE SET NULL: khi xoa lop, sinh vien bi go gan (khong bi xoa)
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Students]') AND type = N'U')
 BEGIN
     CREATE TABLE Students (
@@ -48,22 +49,22 @@ BEGIN
             ON DELETE SET NULL
             ON UPDATE CASCADE
     );
-    PRINT 'Bảng Students đã được tạo.';
+    PRINT 'Bang Students da duoc tao.';
 END
 GO
 
--- 4. Chèn dữ liệu mẫu cho bảng Classes
+-- 4. Du lieu mau - Lop hoc
 IF NOT EXISTS (SELECT 1 FROM Classes WHERE class_code = 'CNTT01')
 BEGIN
     INSERT INTO Classes (class_code, class_name) VALUES
-        ('CNTT01', N'Công nghệ thông tin 01'),
-        ('CNTT02', N'Công nghệ thông tin 02'),
-        ('KTPM01', N'Kỹ thuật phần mềm 01');
-    PRINT 'Đã chèn dữ liệu mẫu vào bảng Classes.';
+        ('CNTT01', N'Cong nghe thong tin 01'),
+        ('CNTT02', N'Cong nghe thong tin 02'),
+        ('KTPM01', N'Ky thuat phan mem 01');
+    PRINT 'Da chen du lieu mau vao Classes.';
 END
 GO
 
--- 5. Chèn dữ liệu mẫu cho bảng Students
+-- 5. Du lieu mau - Sinh vien
 IF NOT EXISTS (SELECT 1 FROM Students WHERE student_code = 'SV001')
 BEGIN
     DECLARE @class1 BIGINT = (SELECT id FROM Classes WHERE class_code = 'CNTT01');
@@ -71,21 +72,21 @@ BEGIN
     DECLARE @class3 BIGINT = (SELECT id FROM Classes WHERE class_code = 'KTPM01');
 
     INSERT INTO Students (student_code, full_name, email, class_id) VALUES
-        ('SV001', N'Nguyễn Văn A',  'a.nguyen@example.com', @class1),
-        ('SV002', N'Trần Thị B',    'b.tran@example.com',   @class1),
-        ('SV003', N'Lê Văn C',      'c.le@example.com',     @class2),
-        ('SV004', N'Phạm Thị D',    'd.pham@example.com',   @class3),
-        ('SV005', N'Hoàng Văn E',   'e.hoang@example.com',  @class1),
-        ('SV006', N'Đặng Thị F',    'f.dang@example.com',   @class2);
-    PRINT 'Đã chèn dữ liệu mẫu vào bảng Students.';
+        ('SV001', N'Nguyen Van A', 'a.nguyen@example.com', @class1),
+        ('SV002', N'Tran Thi B',  'b.tran@example.com',   @class1),
+        ('SV003', N'Le Van C',    'c.le@example.com',      @class2),
+        ('SV004', N'Pham Thi D',  'd.pham@example.com',   @class3),
+        ('SV005', N'Hoang Van E', 'e.hoang@example.com',  @class1),
+        ('SV006', N'Dang Thi F',  'f.dang@example.com',   @class2);
+    PRINT 'Da chen du lieu mau vao Students.';
 END
 GO
 
--- 6. Kiểm tra dữ liệu
-SELECT 'Classes' AS [Bảng], COUNT(*) AS [Số bản ghi] FROM Classes
+-- 6. Kiem tra ket qua
+SELECT 'Classes' AS [Bang], COUNT(*) AS [So ban ghi] FROM Classes
 UNION ALL
 SELECT 'Students', COUNT(*) FROM Students;
 GO
 
-PRINT '=== Khởi tạo database hoàn tất! ===';
+PRINT '=== Khoi tao database hoan tat! ===';
 GO
