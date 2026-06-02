@@ -169,9 +169,11 @@ Double-click vào bảng để xem/sửa dữ liệu trực tiếp trong Intelli
 
 ---
 
-## 5. Bước 4 — Cấu hình application.properties
+## 5. Bước 4 — Cấu hình kết nối database
 
-Mở file `src/main/resources/application.properties` và cập nhật:
+> **V1.1:** Cấu hình SQL Server nằm trong `application-dev.properties`. File `application.properties` chỉ bật profile `dev`.
+
+Mở file `src/main/resources/application-dev.properties` và cập nhật (hoặc dùng biến `DB_PASSWORD`):
 
 ```properties
 # ============================================
@@ -185,7 +187,7 @@ spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=ClassroomDB;e
 # spring.datasource.url=jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=ClassroomDB;encrypt=true;trustServerCertificate=true
 
 spring.datasource.username=sa
-spring.datasource.password=YourPassword123        ← ĐỔI THÀNH MẬT KHẨU CỦA BẠN
+spring.datasource.password=${DB_PASSWORD:YourPassword123}   ← ĐỔI hoặc set biến DB_PASSWORD
 spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
 
 # ============================================
@@ -220,6 +222,15 @@ server.port=8080
 ---
 
 ## 6. Bước 5 — Chạy ứng dụng và kiểm tra
+
+### 6.0. Chạy bằng Maven Wrapper (không cần cài Maven)
+
+```powershell
+cd De_Tai_PT_Web_JavaEE
+$env:JAVA_HOME = "C:\jdk-17.0.12"
+$env:DB_PASSWORD = "MatKhauCuaBan"
+.\mvnw.cmd spring-boot:run
+```
 
 ### 6.1. Mở project trong IntelliJ
 
@@ -335,8 +346,10 @@ spring.datasource.url=jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=Classr
 □ Tài khoản sa đã được bật và có mật khẩu
 □ TCP/IP đã bật, port 1433
 □ Đã chạy init-db.sql → database ClassroomDB tồn tại
-□ application.properties đã điền đúng password
-□ IntelliJ đã load xong Maven dependencies
-□ Chạy ClassroomManagementApplication.java → thấy "Started on port 8080"
+□ application-dev.properties hoặc DB_PASSWORD đã đúng
+□ JDK 17 (java -version)
+□ Chạy bằng mvnw hoặc IntelliJ → "Started on port 8080"
 □ Truy cập http://localhost:8080 → thấy giao diện
+□ Thử validation / flash message (V1.1)
+□ Thử phân trang & tìm kiếm SV (V1.2)
 ```

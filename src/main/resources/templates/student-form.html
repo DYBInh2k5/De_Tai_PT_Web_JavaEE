@@ -12,6 +12,7 @@
 </head>
 <body>
     <nav th:replace="~{layout :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></nav>
+    <div th:replace="~{layout :: alerts}"></div>
 
     <div class="container">
         <div class="row justify-content-center">
@@ -19,25 +20,39 @@
                 <div class="page-card">
                     <h2 th:text="${student.id == null ? '➕ Thêm Sinh viên' : '✏️ Sửa Sinh viên'}"></h2>
                     <hr>
-                    <form th:action="@{/students/save}" th:object="${student}" method="post">
+
+                    <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                        <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+                    </div>
+
+                    <form th:action="@{/students/save}" th:object="${student}" method="post" novalidate>
                         <input type="hidden" th:field="*{id}">
 
                         <div class="mb-3">
                             <label for="studentCode" class="form-label fw-semibold">Mã sinh viên <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="studentCode"
-                                   th:field="*{studentCode}" placeholder="VD: SV001" required>
+                                   th:field="*{studentCode}"
+                                   th:classappend="${#fields.hasErrors('studentCode')} ? 'is-invalid'"
+                                   placeholder="VD: SV001">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('studentCode')}" th:errors="*{studentCode}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="fullName" class="form-label fw-semibold">Họ tên <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="fullName"
-                                   th:field="*{fullName}" placeholder="VD: Nguyễn Văn A" required>
+                                   th:field="*{fullName}"
+                                   th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid'"
+                                   placeholder="VD: Nguyễn Văn A">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="email" class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="email"
-                                   th:field="*{email}" placeholder="VD: example@email.com" required>
+                                   th:field="*{email}"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                                   placeholder="VD: example@email.com">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                         </div>
 
                         <div class="mb-3">

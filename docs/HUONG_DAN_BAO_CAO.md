@@ -43,9 +43,10 @@ Báo cáo của bạn cần tuân thủ cấu trúc chuyên nghiệp. Dưới đ
     - Form thêm sinh viên (có dropdown chọn lớp).
 
 ## 7. Đánh giá và kết luận
-- **Kết quả:** Đã hoàn thành các chức năng bắt buộc.
-- **Hạn chế:** Giao diện còn đơn giản, chưa có phân trang.
-- **Hướng phát triển:** Thêm chức năng tìm kiếm nâng cao, quản lý điểm số.
+- **Kết quả:** Đã hoàn thành các chức năng bắt buộc; V1.1 bổ sung validation và UX cơ bản.
+- **Hạn chế:** Chưa đăng nhập, chưa REST API (Phase 3–5).
+- **Đã làm V1.2:** Phân trang, tìm kiếm, Flyway, N+1 — mô tả trong báo cáo mục 6.3.
+- **Hướng phát triển:** REST API, giảng viên/môn học/điểm (Phase 3).
 
 ## 8. Tài liệu tham khảo
 - Spring Boot Documentation.

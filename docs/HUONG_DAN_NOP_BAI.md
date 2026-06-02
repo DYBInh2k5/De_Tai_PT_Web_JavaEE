@@ -9,12 +9,14 @@
 2.  **Slide:** `Thuyet_Trinh_Nhom_XX.pptx`.
 3.  **Mã nguồn:** Thư mục project (nén thành file `.zip` hoặc `.rar`).
 4.  **Database:** File `init-db.sql`.
-5.  **Hướng dẫn:** File `README.md` (đã có sẵn trong project).
+5.  **Hướng dẫn:** File `README.md`, `docs/KE_HOACH_PHAT_TRIEN.md` (kế hoạch & tiến độ).
 
 ## 2. Lưu ý trước khi nén bài
-- **Xóa thư mục `target/`**: Trước khi nén mã nguồn, hãy xóa thư mục `target` để file nén nhẹ hơn (IntelliJ sẽ tự tạo lại khi chạy).
-- **Kiểm tra SQL**: Chạy thử file `.sql` trên một máy khác để đảm bảo không lỗi.
-- **Cấu hình DB**: Đảm bảo trong báo cáo có nhắc người chấm bài thay đổi password SQL Server trong `application.properties`.
+- **Xóa thư mục `target/`**: Trước khi nén mã nguồn, hãy xóa thư mục `target` để file nén nhẹ hơn.
+- **Giữ `mvnw`, `mvnw.cmd`, `.mvn/`**: Người chấm có thể chạy không cần cài Maven.
+- **Không nén mật khẩu thật**: Dùng `application-dev.properties` mặc định hoặc `application.properties.example`; hướng dẫn set `DB_PASSWORD` trong README.
+- **Kiểm tra SQL**: Chạy thử `init-db.sql` trên máy sạch.
+- **Ghi rõ JDK 17** trong README và báo cáo mục cài đặt.
 
 ## 3. Cấu trúc thư mục nộp bài đề nghị
 ```text

@@ -21,14 +21,77 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link" th:href="@{/dashboard}">📊 Tổng quan</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" th:href="@{/classes}">📚 Lớp học</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/students}">👨‍🎓 Sinh viên</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/teachers}">👨‍🏫 Giảng viên</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/subjects}">📖 Môn học</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/grades}">📝 Điểm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/swagger-ui.html}" target="_blank">🔗 API</a>
+                    </li>
                 </ul>
             </div>
         </div>
+    </nav>
+
+    <!-- FLASH MESSAGES -->
+    <div th:fragment="alerts" class="container mt-3">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+        </div>
+    </div>
+
+    <!-- PAGINATION — danh sách lớp -->
+    <nav th:fragment="pagination-classes" th:if="${classPage != null and classPage.totalPages > 1}" aria-label="Phân trang lớp">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item" th:classappend="${classPage.first} ? 'disabled'">
+                <a class="page-link" th:href="@{/classes(page=${classPage.number - 1}, size=${pageSize})}">« Trước</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, classPage.totalPages - 1)}"
+                th:classappend="${i == classPage.number} ? 'active'">
+                <a class="page-link" th:href="@{/classes(page=${i}, size=${pageSize})}" th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${classPage.last} ? 'disabled'">
+                <a class="page-link" th:href="@{/classes(page=${classPage.number + 1}, size=${pageSize})}">Sau »</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- PAGINATION — danh sách sinh viên (giữ bộ lọc) -->
+    <nav th:fragment="pagination-students" th:if="${studentPage != null and studentPage.totalPages > 1}" aria-label="Phân trang sinh viên">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item" th:classappend="${studentPage.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/students(page=${studentPage.number - 1}, size=${pageSize}, classId=${selectedClassId}, keyword=${keyword})}">« Trước</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, studentPage.totalPages - 1)}"
+                th:classappend="${i == studentPage.number} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/students(page=${i}, size=${pageSize}, classId=${selectedClassId}, keyword=${keyword})}"
+                   th:text="${i + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${studentPage.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/students(page=${studentPage.number + 1}, size=${pageSize}, classId=${selectedClassId}, keyword=${keyword})}">Sau »</a>
+            </li>
+        </ul>
     </nav>
 
     <!-- SCRIPTS FRAGMENT -->

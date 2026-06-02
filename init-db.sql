@@ -1,7 +1,9 @@
 -- ============================================================
 -- Script khởi tạo Database cho ứng dụng Quản lý Lớp học
--- Chạy script này trong SQL Server Management Studio (SSMS)
--- hoặc Azure Data Studio trước khi khởi động ứng dụng
+-- Chạy trong SSMS / Azure Data Studio TRƯỚC lần chạy app đầu tiên
+--
+-- Lưu ý (V1.2): Ứng dụng cũng dùng Flyway (db/migration/).
+-- Nếu DB đã có bảng từ script này, Flyway tự baseline — không ghi đè dữ liệu.
 -- ============================================================
 
 -- 1. Tạo Database nếu chưa tồn tại

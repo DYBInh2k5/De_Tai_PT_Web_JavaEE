@@ -2,6 +2,8 @@
 
 **Đề tài:** Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate qua ứng dụng quản lý lớp học.
 
+> **Cập nhật V1.4:** REST API + Swagger + Docker. Chi tiết: `KE_HOACH_PHAT_TRIEN.md`.
+
 ---
 
 ## 1. Giới thiệu đề tài
@@ -106,14 +108,22 @@ private Classroom classroom;
 - Đợi IntelliJ tải xong các thư viện Maven (góc dưới bên phải).
 
 ### Bước 3: Cấu hình ứng dụng
-- Mở file `src/main/resources/application.properties`.
-- Chỉnh sửa mật khẩu SQL Server của bạn tại dòng:
-  `spring.datasource.password=Mật_Khẩu_Của_Bạn`
+- Mở `src/main/resources/application-dev.properties` hoặc đặt biến môi trường:
+  ```powershell
+  $env:DB_PASSWORD = "MatKhauSaCuaBan"
+  ```
+- Xem thêm `application.properties.example` ở thư mục gốc project.
 
 ### Bước 4: Chạy ứng dụng
-- Tìm file `ClassroomManagementApplication.java` trong `src/main/java/com/ttjavaee/classroom/`.
-- Nhấn chuột phải vào file hoặc biểu tượng tam giác xanh và chọn **Run**.
-- Truy cập trình duyệt: `http://localhost:8080`.
+- **IntelliJ:** Run `ClassroomManagementApplication.java` (JDK 17).
+- **Dòng lệnh:** `.\mvnw.cmd spring-boot:run` (Windows) trong folder `De_Tai_PT_Web_JavaEE`.
+- Truy cập: `http://localhost:8080`.
+
+### Bước 5: Kiểm tra tính năng
+- **V1.1:** Form trống → validation; mã trùng → lỗi; xóa POST + flash message.
+- **V1.2:** Tìm kiếm SV, phân trang, Flyway.
+- **V1.3:** Dashboard, GV, môn, điểm.
+- **V1.4:** Swagger `/swagger-ui.html`; thử `GET /api/v1/students`; Docker `docker compose up`.
 
 ---
 
@@ -121,7 +131,10 @@ private Classroom classroom;
 - Ứng dụng chạy ổn định trên môi trường Web.
 - Thể hiện rõ ràng cách ánh xạ quan hệ One-to-Many giữa Lớp và Sinh viên.
 - Giao diện thân thiện, dễ sử dụng nhờ Bootstrap.
-- Xử lý tốt các ràng buộc khóa ngoại (ví dụ: Khi xóa lớp, có thể cấu hình xóa sinh viên hoặc set NULL).
+- Xử lý tốt các ràng buộc khóa ngoại (khi xóa lớp → `class_id` sinh viên = NULL).
+- **V1.1:** Validation, flash message, POST delete, xử lý mã trùng.
+- **V1.2:** Phân trang, tìm kiếm SV, Flyway, tối ưu truy vấn.
+- **V1.3:** Mở rộng domain GV / môn / điểm; quan hệ `@ManyToOne` Lớp–GV; dashboard thống kê.
 
 ---
 *Tài liệu này được biên soạn để phục vụ việc báo cáo và hướng dẫn triển khai dự án.*

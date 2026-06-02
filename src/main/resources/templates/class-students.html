@@ -12,12 +12,18 @@
 </head>
 <body>
     <nav th:replace="~{layout :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></nav>
+    <div th:replace="~{layout :: alerts}"></div>
 
     <div class="container">
         <div class="page-card">
             <div class="mb-4">
                 <h2>👨‍🎓 Sinh viên lớp: <span class="text-primary" th:text="${classroom.className}"></span></h2>
-                <p class="text-muted mb-0">Mã lớp: <strong th:text="${classroom.classCode}"></strong></p>
+                <p class="text-muted mb-0">
+                    Mã lớp: <strong th:text="${classroom.classCode}"></strong>
+                    <span th:if="${classroom.teacher != null}">
+                        · GV: <strong th:text="${classroom.teacher.fullName}"></strong>
+                    </span>
+                </p>
             </div>
 
             <table class="table table-bordered align-middle">

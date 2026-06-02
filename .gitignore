@@ -35,7 +35,9 @@ gen/
 .DS_Store
 Thumbs.db
 
-# Maven
-.mvn/
-mvnw
-mvnw.cmd
+# Cấu hình local (mật khẩu DB)
+src/main/resources/application-local.properties
+application-local.properties
+
+# Maven build output
+target/

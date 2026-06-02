@@ -739,9 +739,10 @@ public class ClassroomController {
         return "class-form";
     }
 
-    @GetMapping("/delete/{id}")          // GET /classes/delete/{id}
-    public String deleteClass(@PathVariable Long id) {
+    @PostMapping("/delete/{id}")         // POST /classes/delete/{id}
+    public String deleteClass(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         classroomService.deleteClassroom(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã xóa lớp học thành công.");
         return "redirect:/classes";
     }
 
@@ -787,8 +788,10 @@ public class StudentController {
 
     @PostMapping("/save")                // POST /students/save
     public String saveStudent(
-            @ModelAttribute("student") Student student,
-            @RequestParam("classroomId") Long classroomId) {
+            @Valid @ModelAttribute("student") Student student,
+            BindingResult bindingResult,
+            @RequestParam(value = "classroomId", required = false) Long classroomId,
+            RedirectAttributes redirectAttributes) {
         // Gán quan hệ Many-to-One: lookup Classroom từ DB rồi set vào Student
         Classroom classroom = classroomService.getClassroomById(classroomId);
         student.setClassroom(classroom);
@@ -949,24 +952,61 @@ spring.datasource.password=<mật_khẩu_SQL_Server_của_bạn>
 - Khái niệm owning side và inverse side trong quan hệ hai chiều.
 - Cách Spring Data JPA tự sinh SQL từ tên method.
 
-## 6.2. Hạn chế
+## 6.2. Cải tiến đã triển khai (V1.1 — Phase 0 & 1)
 
-- **Chưa có validation đầu vào**: Chưa kiểm tra định dạng email, mã sinh viên trùng lặp ở tầng ứng dụng.
-- **Chưa có phân trang**: Khi dữ liệu lớn, danh sách hiển thị toàn bộ có thể chậm.
-- **Chưa xử lý lỗi thân thiện**: Khi nhập mã lớp/mã SV trùng, ứng dụng trả về trang lỗi mặc định.
-- **Giao diện còn đơn giản**: Chưa có tính năng tìm kiếm, sắp xếp cột.
-- **Chưa có bảo mật**: Không có đăng nhập/phân quyền.
-- **N+1 Query Problem tiềm ẩn**: Khi hiển thị danh sách lớp kèm số sinh viên, Hibernate có thể thực hiện N+1 câu SQL nếu không dùng JOIN FETCH.
+| Cải tiến | Mô tả |
+|----------|--------|
+| Maven Wrapper | `mvnw` / `mvnw.cmd` — chạy không cần cài Maven toàn cục |
+| Profile `dev` | Tách cấu hình DB; mật khẩu qua `DB_PASSWORD` |
+| Bean Validation | `@NotBlank`, `@Email`, `@Size` trên Entity; `@Valid` trên Controller |
+| Flash message | Thông báo thành công / lỗi sau thêm, sửa, xóa |
+| POST delete | `POST /classes/delete/{id}`, `POST /students/delete/{id}` |
+| GlobalExceptionHandler | Bắt `DataIntegrityViolationException` (mã trùng) |
+| `@Transactional` | Service layer |
 
-## 6.3. Hướng phát triển
+## 6.3. Cải tiến V1.2 (Phase 2)
 
-- **Thêm Spring Validation**: Dùng `@Valid`, `@NotBlank`, `@Email` để validate form.
-- **Thêm phân trang**: Dùng `Pageable` trong Spring Data JPA.
-- **Thêm tìm kiếm**: Tìm sinh viên theo tên, mã SV.
-- **Thêm Spring Security**: Đăng nhập, phân quyền admin/user.
-- **Tối ưu query**: Dùng `@Query` với JOIN FETCH để tránh N+1 problem.
-- **Mở rộng domain**: Thêm bảng môn học, điểm số, giảng viên.
-- **REST API**: Chuyển sang kiến trúc REST + React/Vue frontend.
+| Cải tiến | Kỹ thuật |
+|----------|----------|
+| Phân trang | Spring Data `Pageable`, `PageRequest` |
+| Tìm kiếm SV | `@Query` + `keyword` (mã, họ tên) |
+| Tránh N+1 (lớp) | `ClassroomSummaryDto` + `SIZE(c.students)` |
+| Tránh N+1 (SV) | `@EntityGraph(attributePaths = "classroom")` |
+| Flyway | `db/migration/V1`, `V2`; `ddl-auto=validate` |
+
+## 6.4. Hạn chế còn lại
+
+- **Chưa có bảo mật**: Không đăng nhập / phân quyền.
+- **Chưa có REST API**: Chỉ giao diện Thymeleaf.
+- **Sắp xếp cột**: Chưa click header để sort động trên UI.
+
+## 6.5. Cải tiến V1.3 (Phase 3)
+
+| Module | Quan hệ JPA | URL |
+|--------|-------------|-----|
+| Giảng viên | `@OneToMany` → Classroom | `/teachers` |
+| Lớp ↔ GV | `@ManyToOne` Teacher | Form lớp học |
+| Môn học | Độc lập | `/subjects` |
+| Điểm | `@ManyToOne` Student + Subject | `/grades` |
+| Dashboard | Aggregation query | `/dashboard` |
+
+Flyway: `V3__add_teachers.sql`, `V4__add_subjects.sql`, `V5__add_grades_and_class_teacher.sql`
+
+## 6.6. Cải tiến V1.4 (Phase 4–5)
+
+| Cải tiến | Mô tả |
+|----------|--------|
+| REST API | `/api/v1` JSON, DTO, `ApiResponse` wrapper |
+| Swagger | SpringDoc OpenAPI 3 |
+| Docker | `docker-compose` (SQL Server + app) |
+| CI | GitHub Actions build + test |
+| Actuator | Health endpoint |
+
+## 6.7. Hướng phát triển tiếp
+
+- **Spring Security** — đăng nhập, phân quyền admin/user
+- **Frontend SPA** — React/Vue gọi API
+- **Testcontainers** — integration test với SQL Server
 
 ---
 
