@@ -3,6 +3,14 @@
 
 ---
 
+## ✅ SLIDE ĐÃ HOÀN THÀNH
+
+> **Link slide Gamma:** https://gamma.app/docs/Tim-hieu-quan-he-One-to-Many-va-Many-to-One-trong-JPAHibernate-qu-0xgbhtwrqgd0ais
+
+Slide đã được làm xong trên Gamma. Nội dung tham khảo bên dưới dùng để đối chiếu hoặc làm lại bằng PowerPoint nếu cần nộp file `.pptx`.
+
+---
+
 ## Slide 1 — Trang bìa
 
 - **Tên đề tài:** Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate qua ứng dụng quản lý lớp học

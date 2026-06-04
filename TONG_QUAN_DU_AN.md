@@ -15,6 +15,7 @@
 | Java | JDK 17 |
 | Port | http://localhost:8080 |
 | GitHub | https://github.com/DYBInh2k5/De_Tai_PT_Web_JavaEE |
+| **Slide thuyết trình** | **https://gamma.app/docs/Tim-hieu-quan-he-One-to-Many-va-Many-to-One-trong-JPAHibernate-qu-0xgbhtwrqgd0ais** |
 
 ---
 
