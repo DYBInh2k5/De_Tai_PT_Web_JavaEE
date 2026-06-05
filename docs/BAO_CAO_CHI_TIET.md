@@ -36,6 +36,19 @@
 **NGÀY NỘP:** *(Ngày/Tháng/Năm)*
 
 ---
+
+# LỜI CẢM ƠN
+
+Nhóm chúng em xin gửi lời cảm ơn chân thành đến **thầy Phan Hồng Trung** — giảng viên hướng dẫn môn Phát triển ứng dụng Web Java EE — đã tận tình giảng dạy, cung cấp tài liệu và định hướng để nhóm có thể hoàn thành đề tài này.
+
+Những kiến thức thầy truyền đạt về JPA/Hibernate, Spring Boot và thiết kế ứng dụng Web đã giúp nhóm không chỉ hiểu lý thuyết mà còn tự tay xây dựng được một ứng dụng hoàn chỉnh từ cơ sở dữ liệu đến giao diện người dùng.
+
+Do kiến thức và kinh nghiệm còn hạn chế, bài làm của nhóm chắc chắn không tránh khỏi thiếu sót. Nhóm rất mong nhận được sự góp ý của thầy để hoàn thiện hơn trong các bài tập và dự án tiếp theo.
+
+Nhóm xin chân thành cảm ơn thầy.
+
+---
+
 # BÁO CÁO ĐỀ TÀI 07
 ## Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate qua ứng dụng quản lý lớp học
 
@@ -1012,13 +1025,21 @@ Flyway: `V3__add_teachers.sql`, `V4__add_subjects.sql`, `V5__add_grades_and_clas
 
 # TÀI LIỆU THAM KHẢO
 
-1. Spring Boot Official Documentation — https://docs.spring.io/spring-boot/docs/current/reference/html/
-2. Spring Data JPA Reference — https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
-3. Hibernate ORM Documentation — https://hibernate.org/orm/documentation/
-4. Baeldung — Spring Data JPA Tutorial — https://www.baeldung.com/the-persistence-layer-with-spring-data-jpa
-5. Baeldung — Hibernate One-to-Many — https://www.baeldung.com/hibernate-one-to-many
-6. Baeldung — JPA Many-to-One — https://www.baeldung.com/jpa-many-to-one
-7. Thymeleaf Documentation — https://www.thymeleaf.org/documentation.html
-8. Bootstrap 5 Documentation — https://getbootstrap.com/docs/5.3/
-9. Microsoft SQL Server JDBC Driver — https://learn.microsoft.com/en-us/sql/connect/jdbc/
+1. Pivotal Software. (2024). *Spring Boot Reference Documentation* (3.2.x). VMware. https://docs.spring.io/spring-boot/docs/current/reference/html/
+
+2. Pivotal Software. (2024). *Spring Data JPA Reference Documentation* (3.2.x). VMware. https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
+
+3. Red Hat, Inc. (2024). *Hibernate ORM User Guide* (6.x). JBoss Community. https://hibernate.org/orm/documentation/
+
+4. Wieruch, R. (2023). *Guide to Spring Data JPA*. Baeldung. https://www.baeldung.com/the-persistence-layer-with-spring-data-jpa
+
+5. Wieruch, R. (2023). *Hibernate One-to-Many Annotation Tutorial*. Baeldung. https://www.baeldung.com/hibernate-one-to-many
+
+6. Wieruch, R. (2023). *JPA Many-to-One Mapping*. Baeldung. https://www.baeldung.com/jpa-many-to-one
+
+7. Thymeleaf Team. (2023). *Thymeleaf + Spring Documentation*. Thymeleaf Project. https://www.thymeleaf.org/documentation.html
+
+8. Bootstrap Team. (2023). *Bootstrap 5.3 Documentation*. Bootstrap. https://getbootstrap.com/docs/5.3/
+
+9. Microsoft Corporation. (2024). *Microsoft JDBC Driver for SQL Server*. Microsoft Learn. https://learn.microsoft.com/en-us/sql/connect/jdbc/
 
