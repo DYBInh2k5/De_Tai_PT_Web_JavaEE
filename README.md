@@ -232,23 +232,49 @@ spring.datasource.password=1    # ← Sửa mật khẩu SQL Server của bạn 
 
 ### Bước 3: Chạy ứng dụng
 
-**Cách 1 — Maven Wrapper (không cần cài Maven):**
+**Cách 1 — Maven Wrapper (khuyên dùng, không cần cài Maven):**
 ```bash
 mvnw spring-boot:run
 ```
+> Lần đầu chạy sẽ hơi chậm vì Maven tải dependencies. Kiên nhẫn chờ.
 
-**Cách 2 — Maven:**
+**Cách 2 — Maven (đã cài Maven toàn cục):**
 ```bash
 mvn spring-boot:run
 ```
 
-**Cách 3 — IDE:**
+**Cách 3 — IDE (IntelliJ IDEA / VS Code):**
 - Mở project trong IntelliJ IDEA.
-- Chạy file `ClassroomManagementApplication.java` (Run 'main()').
+- Chuột phải file `ClassroomManagementApplication.java` → **Run 'ClassroomManagementApplication'**
+- Hoặc click nút ▶ xanh cạnh `public static void main`.
+
+**Dấu hiệu chạy thành công — nhìn console:**
+```
+Tomcat started on port 8080 (http)
+Started ClassroomManagementApplication in X.XXX seconds
+```
+Sau dòng này là có thể truy cập được.
 
 ### Bước 4: Truy cập
 
 Mở trình duyệt: [http://localhost:8080](http://localhost:8080)
+
+---
+
+### CÁCH TẮT ỨNG DỤNG
+
+Khi dùng xong, cần tắt server để giải phóng cổng 8080.
+
+| Cách | Thao tác |
+|------|----------|
+| **Trong cửa sổ CMD đang chạy** | Nhấn `Ctrl + C` → gõ `Y` (nếu hỏi) → Enter |
+| **Trong IntelliJ** | Nhấn nút ■ **Stop** (ô vuông đỏ) trong tab Run |
+| **Task Manager** | Mở Task Manager → tab Processes → tìm `java` → End Task |
+| **PowerShell / Command Prompt** | Chạy lệnh: `taskkill /F /IM java.exe` (sẽ tắt **mọi** Java) |
+
+> ⚠️ Lưu ý: Nếu không tắt server, lần chạy sau sẽ báo lỗi `Port 8080 already in use`.
+> 
+> Để kiểm tra cổng 8080 có đang bị chiếm không, mở CMD chạy: `netstat -ano | findstr :8080`
 
 ---
 

@@ -123,33 +123,77 @@ spring.datasource.url=jdbc:sqlserver://localhost\SQLEXPRESS;databaseName=Classro
 
 ## 5. Bước 4 — Chạy ứng dụng
 
-### 5.1. Tìm file main
+### 5.1. Cách 1: Chạy bằng Maven Wrapper (khuyên dùng)
 
+Mở **Command Prompt** hoặc **PowerShell** tại thư mục dự án (`De_Tai_PT_Web_JavaEE`):
+
+```bash
+mvnw spring-boot:run
 ```
-src/main/java/com/ttjavaee/classroom/ClassroomManagementApplication.java
+
+> Lần đầu chạy sẽ hơi chậm vì Maven tải dependencies. Kiên nhẫn chờ.
+
+### 5.2. Cách 2: Chạy bằng Maven (đã cài Maven toàn cục)
+
+```bash
+mvn spring-boot:run
 ```
 
-### 5.2. Chạy
+### 5.3. Cách 3: Chạy bằng IntelliJ IDEA
 
-Chuột phải file → **Run 'ClassroomManagementApplication'**
+1. **File → Open** → chọn thư mục `De_Tai_PT_Web_JavaEE` → **OK**
+2. Chờ IntelliJ tải dependencies (góc dưới phải)
+3. Mở file: `src/main/java/com/ttjavaee/classroom/ClassroomManagementApplication.java`
+4. Chuột phải → **Run 'ClassroomManagementApplication'**
+5. Hoặc click nút ▶ xanh cạnh `public static void main`
 
-Hoặc click nút ▶ xanh cạnh `public static void main`.
+### 5.4. Kiểm tra log thành công
 
-### 5.3. Kiểm tra log thành công
-
-Trong tab **Run** ở dưới IntelliJ:
+Dù chạy cách nào, khi console hiện:
 ```
 Hibernate: create table Classes (...)
 Hibernate: create table Students (...)
-Tomcat started on port(s): 8080 (http)
+Tomcat started on port 8080 (http)
 Started ClassroomManagementApplication in X.XXX seconds
 ```
+→ **Ứng dụng đã sẵn sàng!**
 
-### 5.4. Truy cập
+### 5.5. Truy cập
 
 Mở trình duyệt → **http://localhost:8080**
 
 Trang tự chuyển về **http://localhost:8080/classes**
+
+---
+
+## CÁCH TẮT ỨNG DỤNG
+
+Khi dùng xong, cần tắt server để giải phóng cổng 8080.
+
+| Phương pháp | Cách làm |
+|-------------|----------|
+| **Nếu chạy bằng CMD** | Nhấn `Ctrl + C` → gõ `Y` → Enter |
+| **Nếu chạy bằng IntelliJ** | Nhấn ■ **Stop** (nút ô vuông đỏ) trong tab Run |
+| **Task Manager** | Mở Task Manager → Processes → chọn `java` → End Task |
+| **Lệnh PowerShell/CMD** | `taskkill /F /IM java.exe` (tắt **mọi** Java trên máy) |
+
+### Kiểm tra cổng 8080 đã được giải phóng chưa
+
+Mở CMD chạy:
+```bash
+netstat -ano | findstr :8080
+```
+- **Không có kết quả** → cổng trống, có thể chạy lại.
+- **Có kết quả** → còn process đang giữ cổng, cần tắt thủ công.
+
+> ⚠️ **Lưu ý quan trọng:** Nếu không tắt server trước khi chạy lại, bạn sẽ gặp lỗi:
+> ```
+> Web server failed to start. Port 8080 was already in use.
+> >
+> Cách xử lý: tắt server cũ (theo hướng dẫn trên) rồi chạy lại.
+> ```
+> 
+> 💡 **Mẹo:** Nếu chỉ muốn tạm dừng xem code mà không tắt server, bạn có thể để nguyên cửa sổ CMD đó. Server vẫn chạy ngầm, trình duyệt vẫn truy cập được. Chỉ khi nào không dùng nữa mới cần tắt.
 
 ---
 
