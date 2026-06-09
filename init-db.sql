@@ -2,11 +2,22 @@
 -- Script khoi tao Database: Quan ly Lop hoc & Sinh vien
 -- De tai 07: One-to-Many va Many-to-One trong JPA/Hibernate
 --
--- HUONG DAN: Chay file nay trong SSMS truoc khi khoi dong ung dung
--- 1. Mo SSMS -> New Query -> mo file nay -> Execute (F5)
+-- CAC BUOC CHAY:
+--   1. Mo SQL Server Management Studio (SSMS)
+--   2. File -> Open -> mo file nay
+--   3. Execute (F5)
+--
+-- FILE NAY SE:
+--   - Tao database ClassroomDB (neu chua co)
+--   - Tao bang Classes va Students
+--   - Tao rang buoc khoa ngoai FK_Student_Class
+--   - Chen du lieu mau (3 lop, 6 sinh vien)
 -- ============================================================
 
--- 1. Tao Database
+-- ============================================================
+-- 1. TAO DATABASE
+-- Kiem tra neu database chua ton tai thi tao moi
+-- ============================================================
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'ClassroomDB')
 BEGIN
     CREATE DATABASE ClassroomDB;
@@ -18,10 +29,19 @@ BEGIN
 END
 GO
 
+-- Chuyen sang su dung database ClassroomDB
 USE ClassroomDB;
 GO
 
--- 2. Tao bang Classes (Lop hoc)
+-- ============================================================
+-- 2. TAO BANG CLASSES (Lop hoc)
+--
+-- id:         BIGINT, tu dong tang (IDENTITY), khoa chinh
+-- class_code: NVARCHAR(50), khong duoc NULL, duy nhat (UNIQUE)
+--              VD: CNTT01, KTPM01
+-- class_name: NVARCHAR(255), khong duoc NULL
+--              VD: Cong nghe thong tin 01
+-- ============================================================
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Classes]') AND type = N'U')
 BEGIN
     CREATE TABLE Classes (
@@ -33,9 +53,29 @@ BEGIN
 END
 GO
 
--- 3. Tao bang Students (Sinh vien)
--- class_id cho phep NULL: sinh vien co the chua duoc gan lop
--- ON DELETE SET NULL: khi xoa lop, sinh vien bi go gan (khong bi xoa)
+-- ============================================================
+-- 3. TAO BANG STUDENTS (Sinh vien)
+--
+-- id:           BIGINT, tu dong tang (IDENTITY), khoa chinh
+-- student_code: NVARCHAR(50), khong duoc NULL, duy nhat
+--                VD: SV001, SV002
+-- full_name:    NVARCHAR(255), khong duoc NULL
+-- email:        NVARCHAR(255), khong duoc NULL
+-- class_id:     BIGINT, duoc phep NULL
+--                -> NULL co nghia sinh vien chua duoc xep lop
+--
+-- KHOA NGOAI (Foreign Key):
+--   FK_Student_Class: class_id tham chieu den Classes.id
+--
+--   ON DELETE SET NULL:
+--     Khi xoa mot lop hoc, tat ca sinh vien trong lop do
+--     se bi SET class_id = NULL (khong bi xoa theo)
+--     -> DAM BAO TOAN VEN DU LIEU
+--
+--   ON UPDATE CASCADE:
+--     Khi sua id cua lop, tu dong cap nhat class_id
+--     trong bang Students (it dung nhung day du)
+-- ============================================================
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Students]') AND type = N'U')
 BEGIN
     CREATE TABLE Students (
@@ -53,7 +93,11 @@ BEGIN
 END
 GO
 
--- 4. Du lieu mau - Lop hoc
+-- ============================================================
+-- 4. CHEN DU LIEU MAU - LOP HOC
+-- 3 lop: CNTT01, CNTT02, KTPM01
+-- Chi chen neu chua co du lieu (tranh loi khi chay lai)
+-- ============================================================
 IF NOT EXISTS (SELECT 1 FROM Classes WHERE class_code = 'CNTT01')
 BEGIN
     INSERT INTO Classes (class_code, class_name) VALUES
@@ -64,9 +108,16 @@ BEGIN
 END
 GO
 
--- 5. Du lieu mau - Sinh vien
+-- ============================================================
+-- 5. CHEN DU LIEU MAU - SINH VIEN
+-- 6 sinh vien, phan bo vao 3 lop:
+--   CNTT01: SV001 (Nguyen Van A), SV002 (Tran Thi B), SV005 (Hoang Van E)
+--   CNTT02: SV003 (Le Van C), SV006 (Dang Thi F)
+--   KTPM01: SV004 (Pham Thi D)
+-- ============================================================
 IF NOT EXISTS (SELECT 1 FROM Students WHERE student_code = 'SV001')
 BEGIN
+    -- Lay ID cua cac lop tu bang Classes
     DECLARE @class1 BIGINT = (SELECT id FROM Classes WHERE class_code = 'CNTT01');
     DECLARE @class2 BIGINT = (SELECT id FROM Classes WHERE class_code = 'CNTT02');
     DECLARE @class3 BIGINT = (SELECT id FROM Classes WHERE class_code = 'KTPM01');
@@ -82,7 +133,10 @@ BEGIN
 END
 GO
 
--- 6. Kiem tra ket qua
+-- ============================================================
+-- 6. KIEM TRA KET QUA
+-- Xem so luong ban ghi trong moi bang
+-- ============================================================
 SELECT 'Classes' AS [Bang], COUNT(*) AS [So ban ghi] FROM Classes
 UNION ALL
 SELECT 'Students', COUNT(*) FROM Students;

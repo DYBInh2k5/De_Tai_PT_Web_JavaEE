@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- ============================================================
+     pom.xml: FILE CAU HINH MAVEN (Build & Dependencies)
+     - Dinh nghia cac thu vien (dependencies) can cho project
+     - Maven tu dong tai cac thu vien nay tu Maven Central ve
+     ============================================================ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!-- ============================================================
+	     PARENT: Spring Boot Starter Parent
+	     Ke thua cau hinh mac dinh tu Spring Boot 3.2.5
+	     - Quan ly version cho tat ca thu vien (khoi khai bao version)
+	     - Cau hinh plugin mac dinh (maven-compiler, surefire,...)
+	     ============================================================ -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -10,6 +21,7 @@
 		<relativePath/>
 	</parent>
 
+	<!-- Thong tin project -->
 	<groupId>com.ttjavaee</groupId>
 	<artifactId>classroom-management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -17,43 +29,69 @@
 	<description>Quản lý lớp học - Demo JPA One-to-Many và Many-to-One</description>
 
 	<properties>
+		<!-- Code nguon viet bang Java 17 -->
 		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
-		<!-- Spring Data JPA / Hibernate -->
+		<!-- ============================================================
+		     spring-boot-starter-data-jpa:
+		     Gom: Hibernate (ORM) + Spring Data JPA + Transaction Manager
+		     Chuc nang: Anh xa Entity <-> Bang CSDL, CRUD tu dong
+		     ============================================================ -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- Thymeleaf template engine -->
+		<!-- ============================================================
+		     spring-boot-starter-thymeleaf:
+		     Template engine ben phia Server
+		     - Viet HTML co embed du lieu tu Java (${...}, th:...)
+		     - Tuong tu JSP nhung hien dai va dep hon
+		     ============================================================ -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-		<!-- Spring MVC Web -->
+		<!-- ============================================================
+		     spring-boot-starter-web:
+		     - Spring MVC (Model-View-Controller)
+		     - Embedded Tomcat (chay Web ma khong can cai Tomcat rieng)
+		     - RESTful API, @Controller, @RestController
+		     ============================================================ -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- SQL Server JDBC Driver -->
+		<!-- ============================================================
+		     mssql-jdbc: Driver ket noi SQL Server tu Java
+		     - Cho phep Spring Boot ket noi den SQL Server
+		     - Scope = runtime: chi can khi chay, khong can khi bien dich
+		     ============================================================ -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Lombok -->
+		<!-- ============================================================
+		     Lombok: Giam code boilerplate
+		     - @Getter, @Setter, @NoArgsConstructor,...
+		     - Tu dong sinh getter/setter/constructor khi bien dich
+		     - Can cai plugin Lombok trong IDE de nhan dien
+		     ============================================================ -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Test -->
+		<!-- ============================================================
+		     spring-boot-starter-test: Thu vien test (JUnit 5 + Mockito)
+		     ============================================================ -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -63,10 +101,12 @@
 
 	<build>
 		<plugins>
+			<!-- Plugin dong goi Spring Boot thanh file JAR chay duoc -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<!-- Khong dong goi Lombok vao file JAR (chi can khi bien dich) -->
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

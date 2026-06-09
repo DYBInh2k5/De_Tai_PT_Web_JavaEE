@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!-- ============================================================
+     class-students.html: TRANG XEM SINH VIEN CUA 1 LOP
+     URL: GET /classes/{id}/students
+     Chuc nang: Hien thi danh sach sinh vien thuoc ve mot lop cu the
+     ============================================================ -->
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +21,7 @@
     <div class="container">
         <div class="page-card">
             <div class="mb-4">
+                <!-- Hien thi ten lop (className) duoc lay tu classroom -->
                 <h2>👨‍🎓 Sinh viên lớp: <span class="text-primary" th:text="${classroom.className}"></span></h2>
                 <p class="text-muted mb-0">Mã lớp: <strong th:text="${classroom.classCode}"></strong></p>
             </div>
@@ -29,11 +35,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- th:each="student : ${students}":
+                         Vong lap qua danh sach sinh vien cua lop nay
+                         Duoc loc tu StudentRepository.findByClassroomId(classId) -->
                     <tr th:each="student : ${students}">
                         <td><strong th:text="${student.studentCode}"></strong></td>
                         <td th:text="${student.fullName}"></td>
                         <td th:text="${student.email}"></td>
                     </tr>
+                    <!-- Neu lop chua co sinh vien nao -->
                     <tr th:if="${#lists.isEmpty(students)}">
                         <td colspan="3" class="text-center text-muted py-4">Lớp này chưa có sinh viên.</td>
                     </tr>

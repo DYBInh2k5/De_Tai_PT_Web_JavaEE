@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!-- ============================================================
+     student-form.html: FORM THEM / SUA SINH VIEN
+     URL: GET /students/add (them) hoac GET /students/edit/{id} (sua)
+     Chuc nang: Form nhap thong tin sinh vien + chon lop (dropdown)
+     ============================================================ -->
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -19,6 +24,10 @@
                 <div class="page-card">
                     <h2 th:text="${student.id == null ? '➕ Thêm Sinh viên' : '✏️ Sửa Sinh viên'}"></h2>
                     <hr>
+
+                    <!-- th:action="@{/students/save}" -> POST den /students/save
+                         th:object="${student}" -> binding voi Student entity
+                         name="classroomId" rieng -> gui rieng ID lop -->
                     <form th:action="@{/students/save}" th:object="${student}" method="post">
                         <input type="hidden" th:field="*{id}">
 
@@ -46,6 +55,13 @@
                                    th:field="*{email}" placeholder="VD: sv@example.com" required>
                         </div>
 
+                        <!-- ============================================================
+                             DROPDOWN CHON LOP CHO SINH VIEN
+                             name="classroomId" -> Controller doc bang @RequestParam("classroomId")
+                             th:each="c : ${classes}" -> duyet danh sach lop tu Controller
+                             th:value="${c.id}" -> gia tri gui di la ID lop
+                             th:selected -> tu dong chon lop hien tai khi sua
+                             ============================================================ -->
                         <div class="mb-3">
                             <label for="classroomId" class="form-label fw-semibold">Lớp học</label>
                             <select class="form-select" id="classroomId" name="classroomId">

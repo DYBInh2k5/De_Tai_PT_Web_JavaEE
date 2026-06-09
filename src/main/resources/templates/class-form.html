@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!-- ============================================================
+     class-form.html: FORM THEM / SUA LOP HOC
+     URL: GET /classes/add (them) hoac GET /classes/edit/{id} (sua)
+     Chuc nang: Form nhap ma lop va ten lop
+     ============================================================ -->
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -17,15 +22,28 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="page-card">
+                    <!-- Tieu de tu dong thay doi:
+                         Neu classroom.id == null -> "Thêm Lớp học"
+                         Neu classroom.id != null -> "Sửa Lớp học" -->
                     <h2 th:text="${classroom.id == null ? '➕ Thêm Lớp học' : '✏️ Sửa Lớp học'}"></h2>
                     <hr>
+
+                    <!-- th:action="@{/classes/save}" -> POST den /classes/save
+                         th:object="${classroom}" -> binding voi doi tuong Classroom
+                         method="post" -> gui du lieu bang POST -->
                     <form th:action="@{/classes/save}" th:object="${classroom}" method="post">
+                        <!-- th:field="*{id}": hidden field luu ID khi sua
+                             Neu them moi: id = null -> khong gui
+                             Neu sua: id != null -> gui de biet cap nhat ai -->
                         <input type="hidden" th:field="*{id}">
 
                         <div class="mb-3">
                             <label for="classCode" class="form-label fw-semibold">
                                 Mã lớp <span class="text-danger">*</span>
                             </label>
+                            <!-- th:field="*{classCode}": binding 2 chieu
+                                 - Khi them: o trong
+                                 - Khi sua: tu dong dien san gia tri tu CSDL -->
                             <input type="text" class="form-control" id="classCode"
                                    th:field="*{classCode}" placeholder="VD: CNTT01" required>
                         </div>
