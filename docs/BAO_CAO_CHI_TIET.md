@@ -338,6 +338,11 @@ ClassroomRepository.deleteById()
 
 ### 3.3.1. Sơ đồ ERD
 
+> ⚠️ **HƯỚNG DẪN VẼ ERD:**
+> Sử dụng **Draw.io** hoặc **SSMS Database Diagram**:
+> - **Cách 1 (Draw.io):** Vào https://app.diagrams.net → Chọn "Entity Relationship" → Kéo 2 bảng `Classes` và `Students` → Nối quan hệ (1 → N) → File → Export as PNG → Chèn vào đây.
+> - **Cách 2 (SSMS):** Mở SSMS → Object Explorer → Database Diagrams → New Diagram → Chọn `Classes` và `Students` → Lưu và chụp màn hình.
+
 ```
 ┌─────────────────────┐          ┌──────────────────────────┐
 │       Classes        │          │         Students          │
@@ -349,6 +354,8 @@ ClassroomRepository.deleteById()
                                   │ class_id (FK → Classes.id)│
                                   └──────────────────────────┘
 ```
+
+> 📎 *Sau khi vẽ xong, chèn ảnh ERD ngay dưới dòng này, thay thế sơ đồ text ở trên.*
 
 ### 3.3.2. Mô tả chi tiết bảng
 
@@ -393,6 +400,11 @@ SELECT * FROM Students WHERE student_code IN ('SV001','SV002','SV005');
 ```
 
 ## 3.4. Kiến trúc chương trình (MVC + Layered Architecture)
+
+> ⚠️ **HƯỚNG DẪN VẼ SƠ ĐỒ MVC:**
+> Dùng **Draw.io** vẽ 5 khối chồng tầng (Browser → Controller → Service → Repository → Database) với mũi tên dọc. Mỗi khối để tên tầng + tên class tương ứng. Export PNG → chèn vào đây.
+>
+> 📎 *Sau khi vẽ xong, chèn ảnh sơ đồ MVC ngay dưới dòng này, thay thế sơ đồ text ở dưới.*
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -535,6 +547,9 @@ server.port=8080
 | `create-drop` | Tạo khi start, xóa khi stop |
 
 ## 4.4. Mô tả Entity (Trọng tâm đề tài)
+
+> ⚠️ **HƯỚNG DẪN VẼ UML CLASS DIAGRAM:**
+> Dùng **Draw.io** → Chọn "UML Class Diagram" → Vẽ 2 class: `Classroom` (với field `+ students: List<Student>`) và `Student` (với field `- classroom: Classroom`) → Nối bằng mũi tên: Classroom 1 ────> Student (1 → N) → Ghi chú `@OneToMany` / `@ManyToOne` / `@JoinColumn` / `mappedBy` trên đường nối. Export PNG → chèn vào đây (giữa 4.4.1 và 4.4.2).
 
 ### 4.4.1. Entity Classroom.java
 
@@ -910,18 +925,42 @@ Các trang khác nhúng fragment bằng:
 
 # CHƯƠNG 5: KẾT QUẢ DEMO
 
-## 5.1. Danh sách các màn hình
+## 5.1. Ảnh chụp màn hình các chức năng
 
-| Màn hình | URL | Mô tả |
-|---|---|---|
-| Danh sách lớp học | `/classes` | Bảng lớp kèm số SV, nút Xem SV / Sửa / Xóa |
-| Form thêm lớp | `/classes/add` | Form 2 trường: Mã lớp, Tên lớp |
-| Form sửa lớp | `/classes/edit/{id}` | Cùng form, tự điền dữ liệu hiện tại |
-| Sinh viên theo lớp | `/classes/{id}/students` | Danh sách SV của một lớp cụ thể |
-| Danh sách sinh viên | `/students` | Bảng SV kèm tên lớp, bộ lọc theo lớp |
-| Lọc SV theo lớp | `/students?classId={id}` | Chỉ hiển thị SV của lớp được chọn |
-| Form thêm sinh viên | `/students/add` | Form 4 trường + dropdown chọn lớp |
-| Form sửa sinh viên | `/students/edit/{id}` | Cùng form, tự điền dữ liệu + chọn đúng lớp |
+> ⚠️ **HƯỚNG DẪN CHỤP ẢNH:**
+> 1. Chạy ứng dụng (xem hướng dẫn ở 5.2).
+> 2. Mở trình duyệt, truy cập từng URL dưới đây.
+> 3. Nhấn `Win + Shift + S` (Windows) để chụp màn hình từng phần.
+> 4. Lưu ảnh dạng `.png` với tên theo STT.
+> 5. Chèn ảnh vào file Word/PDF tại vị trí tương ứng.
+
+| STT | Màn hình | URL | Cách chụp |
+|-----|----------|-----|-----------|
+| 1 | **Danh sách lớp học** | [http://localhost:8080/classes](http://localhost:8080/classes) | Chụp toàn bộ bảng + nút Thêm. Để nguyên dữ liệu mẫu (3 lớp). |
+| 2 | **Form thêm lớp** | [http://localhost:8080/classes/add](http://localhost:8080/classes/add) | Nhập mã `HTTT01`, tên `Hệ thống thông tin 01` rồi chụp **trước khi nhấn Lưu**. |
+| 3 | **Danh sách lớp sau khi thêm** | [http://localhost:8080/classes](http://localhost:8080/classes) | Chụp bảng danh sách lúc này có 4 lớp (có HTTT01). |
+| 4 | **Form sửa lớp** | [http://localhost:8080/classes/edit/1](http://localhost:8080/classes/edit/1) | Click nút "Sửa" ở lớp CNTT01. Chụp form đã điền sẵn dữ liệu. |
+| 5 | **Sinh viên theo lớp** | [http://localhost:8080/classes/1/students](http://localhost:8080/classes/1/students) | Click "Xem SV" ở lớp CNTT01. Chụp danh sách 3 sinh viên của lớp. |
+| 6 | **Danh sách sinh viên** | [http://localhost:8080/students](http://localhost:8080/students) | Chụp toàn bộ bảng SV + dropdown lọc ở phía trên. |
+| 7 | **Lọc sinh viên theo lớp** | [http://localhost:8080/students?classId=1](http://localhost:8080/students?classId=1) | Chọn lớp CNTT01 trong dropdown, nhấn "Lọc". Chụp kết quả chỉ còn 3 SV. |
+| 8 | **Form thêm sinh viên** | [http://localhost:8080/students/add](http://localhost:8080/students/add) | Nhập đầy đủ thông tin, mở dropdown chọn lớp. Chụp **trước khi nhấn Lưu**. |
+| 9 | **Xóa lớp → SET NULL** | [http://localhost:8080/classes](http://localhost:8080/classes) | Xóa lớp KTPM01. Chụp thông báo xác nhận. Sau đó vào `/students` chụp SV004 hiện badge "Chưa gán lớp". |
+| 10 | **Console Hibernate SQL** | Trong cửa sổ CMD/IntelliJ | Chụp console khi ứng dụng chạy, thấy các câu lệnh Hibernate SQL log ra. |
+
+### 5.1.1. Bố trí ảnh trong báo cáo (gợi ý)
+
+| Vị trí trong báo cáo | Ảnh cần chèn |
+|----------------------|--------------|
+| Sau mục 5.1 | Ảnh số 1 — Danh sách lớp học |
+| Sau mô tả form thêm lớp | Ảnh số 2 — Form thêm lớp |
+| Sau mô tả kết quả thêm | Ảnh số 3 — Danh sách sau khi thêm |
+| Sau mô tả form sửa | Ảnh số 4 — Form sửa lớp |
+| Sau mô tả xem SV theo lớp | Ảnh số 5 — Sinh viên theo lớp |
+| Sau mô tả danh sách SV | Ảnh số 6 — Danh sách sinh viên |
+| Sau mô tả lọc SV | Ảnh số 7 — Lọc sinh viên theo lớp |
+| Sau mô tả form thêm SV | Ảnh số 8 — Form thêm sinh viên |
+| Sau mô tả xóa lớp | Ảnh số 9a — Xác nhận xóa + 9b — SV bị gỡ lớp |
+| Trong phần JPA/Hibernate | Ảnh số 10 — Console log Hibernate SQL |
 
 ## 5.2. Cách chạy chương trình
 
@@ -932,13 +971,15 @@ Các trang khác nhúng fragment bằng:
 spring.datasource.password=<mật_khẩu_SQL_Server_của_bạn>
 ```
 
-**Bước 3:** Mở IntelliJ IDEA → `File → Open` → chọn folder `De_Tai_PT_Web_JavaEE` (folder chứa `pom.xml`)
+**Bước 3:** Mở Command Prompt tại thư mục `De_Tai_PT_Web_JavaEE`, chạy:
+```bash
+mvnw spring-boot:run
+```
+> Hoặc mở IntelliJ IDEA → `File → Open` → chọn folder `De_Tai_PT_Web_JavaEE` → Run `ClassroomManagementApplication.java`
 
-**Bước 4:** Chờ Maven tải dependencies (góc dưới phải IntelliJ)
+**Bước 4:** Chờ đến khi console hiện `Tomcat started on port 8080 (http)`
 
-**Bước 5:** Tìm `ClassroomManagementApplication.java` → Click nút ▶️ Run (hoặc `Shift + F10`)
-
-**Bước 6:** Mở trình duyệt → truy cập `http://localhost:8080`
+**Bước 5:** Mở trình duyệt → truy cập `http://localhost:8080`
 
 ---
 
@@ -1020,6 +1061,28 @@ Flyway: `V3__add_teachers.sql`, `V4__add_subjects.sql`, `V5__add_grades_and_clas
 - **Spring Security** — đăng nhập, phân quyền admin/user
 - **Frontend SPA** — React/Vue gọi API
 - **Testcontainers** — integration test với SQL Server
+
+## 6.8. Kết luận
+
+Qua đề tài "Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate qua ứng dụng quản lý lớp học", nhóm đã đạt được những kết quả sau:
+
+**Về mặt lý thuyết:**
+Nhóm đã hiểu và trình bày được cơ chế ORM (Object-Relational Mapping) — cách JPA/Hibernate ánh xạ các bảng cơ sở dữ liệu quan hệ thành các đối tượng Java. Cụ thể, nhóm nắm vững cách sử dụng các annotation `@OneToMany`, `@ManyToOne`, `@JoinColumn`, `mappedBy` và `cascade` để biểu diễn quan hệ một-nhiều và nhiều-một giữa hai thực thể `Classroom` và `Student`. Nhóm cũng hiểu được khái niệm owning side (bên chủ quan hệ, giữ khóa ngoại) và inverse side (bên được ánh xạ), cũng như tầm quan trọng của việc thiết lập đúng cả hai chiều trong quan hệ hai chiều (bidirectional relationship).
+
+**Về mặt thực hành:**
+Nhóm đã xây dựng thành công một ứng dụng Web Java/Spring Boot hoàn chỉnh với kiến trúc MVC (Model-View-Controller) phân tầng rõ ràng: Entity → Repository → Service → Controller → View (Thymeleaf). Ứng dụng kết nối được với SQL Server, thực hiện đầy đủ các chức năng CRUD (Thêm, Sửa, Xem, Xóa) cho cả lớp học và sinh viên, cho phép gán sinh viên vào lớp qua dropdown, lọc sinh viên theo lớp, và hiển thị số lượng sinh viên của từng lớp — tất cả đều minh họa trực quan cho quan hệ One-to-Many và Many-to-One trong JPA.
+
+**Kết quả cụ thể:**
+- 100% các chức năng bắt buộc theo yêu cầu đề tài đều hoạt động ổn định.
+- Cơ sở dữ liệu được thiết kế đúng chuẩn với khóa chính, khóa ngoại và ràng buộc `ON DELETE SET NULL`.
+- Giao diện Web sử dụng Bootstrap 5 đáp ứng (responsive), hiển thị tốt trên cả máy tính và thiết bị di động.
+- Dữ liệu được đồng bộ hóa trực tiếp giữa ứng dụng và SQL Server — mọi thao tác thêm/sửa/xóa đều cập nhật ngay vào database.
+
+**Hạn chế:**
+Ứng dụng hiện tại chưa có bảo mật (đăng nhập, phân quyền), chưa có REST API, và chưa xử lý được khối lượng dữ liệu lớn do thiếu phân trang và tìm kiếm nâng cao.
+
+**Tổng kết:**
+Đề tài đã giúp nhóm hiểu rõ cách JPA/Hibernate ánh xạ quan hệ giữa các bảng trong cơ sở dữ liệu sang mô hình đối tượng trong Java, đồng thời áp dụng thành công vào tình huống quản lý dữ liệu thực tế. Đây là nền tảng quan trọng để nhóm có thể phát triển các ứng dụng Web phức tạp hơn trong tương lai.
 
 ---
 

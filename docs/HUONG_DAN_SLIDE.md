@@ -1,4 +1,4 @@
-﻿# HƯỚNG DẪN LÀM SLIDE THUYẾT TRÌNH (.pptx)
+﻿    # HƯỚNG DẪN LÀM SLIDE THUYẾT TRÌNH (.pptx)
 ## 10 slide — khoảng 8–12 slide theo yêu cầu đề bài
 
 ---
@@ -48,6 +48,8 @@ Dạng bảng hoặc icon:
 
 ## Slide 4 — Tổng quan quan hệ One-to-Many / Many-to-One
 
+> ⚠️ Vẽ lại bằng Draw.io với 2 khối Classes ── Students, dùng mũi tên 1→N. Ghi rõ annotation tương ứng. Export PNG dán vào slide.
+
 Vẽ sơ đồ đơn giản:
 
 ```
@@ -67,6 +69,8 @@ Vẽ sơ đồ đơn giản:
 ---
 
 ## Slide 5 — Thiết kế cơ sở dữ liệu
+
+> ⚠️ Dán ảnh ERD đã vẽ ở báo cáo (3.3.1) vào slide này. Bảng mô tả bên dưới để tham khảo thêm.
 
 Dán ERD hoặc bảng mô tả:
 
@@ -90,6 +94,8 @@ Dán ERD hoặc bảng mô tả:
 
 ## Slide 6 — Kiến trúc chương trình (MVC)
 
+> ⚠️ Dán ảnh sơ đồ MVC đã vẽ ở báo cáo (3.4) vào slide này. Sơ đồ text bên dưới để tham khảo.
+
 Vẽ sơ đồ tầng:
 
 ```
@@ -109,6 +115,8 @@ Thymeleaf Templates → View (HTML + Bootstrap)
 ---
 
 ## Slide 7 — Mapping JPA (Trọng tâm)
+
+> ⚠️ Dán ảnh UML Class Diagram (2 class Classroom + Student kèm annotation) đã vẽ theo hướng dẫn ở báo cáo (4.4) vào slide này.
 
 Hiển thị 2 đoạn code song song:
 
@@ -136,12 +144,14 @@ Giải thích ngắn:
 
 ## Slide 8 — Demo các chức năng
 
-Dán ảnh chụp màn hình:
+Dán ảnh chụp màn hình (dùng `Win + Shift + S` để chụp từng phần):
 
-1. **Danh sách lớp học** — có cột Số SV (badge xanh)
-2. **Form thêm sinh viên** — dropdown chọn lớp
-3. **Danh sách sinh viên** — cột Lớp học hiển thị tên lớp
-4. **Lọc sinh viên theo lớp** — dropdown filter
+1. **Danh sách lớp học** — `http://localhost:8080/classes` — có cột Số SV (badge xanh)
+2. **Form thêm sinh viên** — `http://localhost:8080/students/add` — dropdown chọn lớp
+3. **Danh sách sinh viên** — `http://localhost:8080/students` — cột Lớp học hiển thị tên lớp
+4. **Lọc sinh viên theo lớp** — `http://localhost:8080/students?classId=1` — dropdown filter
+5. **Sinh viên theo lớp** — `http://localhost:8080/classes/1/students` — danh sách SV trong 1 lớp
+6. **Form thêm lớp** — `http://localhost:8080/classes/add` — form nhập mã và tên lớp
 
 ---
 
