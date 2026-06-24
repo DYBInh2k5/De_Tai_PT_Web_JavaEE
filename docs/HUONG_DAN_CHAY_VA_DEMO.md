@@ -125,13 +125,23 @@ spring.datasource.url=jdbc:sqlserver://localhost\SQLEXPRESS;databaseName=Classro
 
 ### 5.1. Cách 1: Chạy bằng Maven Wrapper (khuyên dùng)
 
-Mở **Command Prompt** hoặc **PowerShell** tại thư mục dự án (`De_Tai_PT_Web_JavaEE`):
+Mở **Command Prompt MỚI** tại thư mục dự án (`De_Tai_PT_Web_JavaEE`):
 
-```bash
-mvnw spring-boot:run
+```cmd
+.\mvnw.cmd spring-boot:run
 ```
 
+> ⚠️ **Quan trọng:** Mở cửa sổ CMD **riêng** vì lệnh này chiếm terminal (chạy server đến khi tắt). Không tắt cửa sổ này.
+>
+> **PowerShell:** `Start-Process -FilePath ".\mvnw.cmd" -ArgumentList "spring-boot:run" -WindowStyle Normal` (mở cửa sổ mới tự động)
+>
 > Lần đầu chạy sẽ hơi chậm vì Maven tải dependencies. Kiên nhẫn chờ.
+>
+> **Tắt server:** Nhấn `Ctrl + C` trong cửa sổ CMD đang chạy, hoặc dùng:
+> ```cmd
+> netstat -ano | findstr :8080
+> taskkill /PID <PID> /F
+> ```
 
 ### 5.2. Cách 2: Chạy bằng Maven (đã cài Maven toàn cục)
 

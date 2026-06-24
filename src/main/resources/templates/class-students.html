@@ -22,7 +22,7 @@
         <div class="page-card">
             <div class="mb-4">
                 <!-- Hien thi ten lop (className) duoc lay tu classroom -->
-                <h2>👨‍🎓 Sinh viên lớp: <span class="text-primary" th:text="${classroom.className}"></span></h2>
+                <h2>Sinh viên lớp: <span class="text-primary" th:text="${classroom.className}"></span></h2>
                 <p class="text-muted mb-0">Mã lớp: <strong th:text="${classroom.classCode}"></strong></p>
             </div>
 
@@ -51,7 +51,7 @@
             </table>
 
             <div class="mt-3 d-flex gap-2">
-                <a th:href="@{/classes}" class="btn btn-secondary">← Quay lại danh sách lớp</a>
+                <a th:href="@{/classes}" class="btn btn-secondary">Quay lại danh sách lớp</a>
                 <a th:href="@{/students/add}" class="btn btn-primary">+ Thêm sinh viên</a>
             </div>
         </div>

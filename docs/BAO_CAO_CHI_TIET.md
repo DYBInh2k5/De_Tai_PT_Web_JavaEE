@@ -27,6 +27,8 @@
 | 2   | *(Họ tên thành viên 2)* | *(MSSV)* | Thành viên |
 | 3   | *(Họ tên thành viên 3)* | *(MSSV)* | Thành viên |
 
+*Bảng 1: Danh sách thành viên nhóm*
+
 ---
 
 **GIẢNG VIÊN HƯỚNG DẪN:** *(Tên giảng viên)*
@@ -89,6 +91,8 @@ JPA/Hibernate ra đời để giải quyết vấn đề này, cho phép lập t
 | Cột (Column) | Thuộc tính (Field/Property) |
 | Khóa ngoại (Foreign Key) | Tham chiếu đối tượng (Object Reference) |
 | JOIN giữa các bảng | Điều hướng qua thuộc tính |
+
+*Bảng 2.1: So sánh mô hình Quan hệ (SQL) và mô hình Đối tượng (Java)*
 
 **Vấn đề không tương thích (Impedance Mismatch):**
 - SQL không hỗ trợ kế thừa, đa hình — Java thì có.
@@ -192,6 +196,8 @@ private Long id;
 | `TABLE` | Dùng bảng phụ để quản lý ID |
 | `AUTO` | JPA tự chọn chiến lược phù hợp |
 
+*Bảng 2.2: Các chiến lược sinh khóa chính (@GeneratedValue)*
+
 ### 2.3.3. Annotation @OneToMany
 
 Đặt ở phía **"Một"** (Classroom), trỏ đến danh sách phía **"Nhiều"** (Student):
@@ -207,6 +213,8 @@ private List<Student> students;
 | `cascade` | `CascadeType.ALL` | Mọi thao tác trên Classroom lan truyền sang Student |
 | `fetch` | `FetchType.LAZY` | Chỉ load danh sách Student khi thực sự cần |
 
+*Bảng 2.3: Các thuộc tính của @OneToMany*
+
 **Các giá trị CascadeType:**
 
 | Giá trị | Ý nghĩa |
@@ -217,12 +225,16 @@ private List<Student> students;
 | `REFRESH` | Khi refresh Classroom, tự động refresh Student |
 | `ALL` | Áp dụng tất cả các cascade trên |
 
+*Bảng 2.4: Các giá trị CascadeType*
+
 **FetchType:**
 
 | Giá trị | Ý nghĩa | Mặc định cho |
 |---|---|---|
 | `LAZY` | Load dữ liệu liên quan khi truy cập lần đầu | `@OneToMany`, `@ManyToMany` |
 | `EAGER` | Load dữ liệu liên quan ngay khi load entity cha | `@ManyToOne`, `@OneToOne` |
+
+*Bảng 2.5: So sánh FetchType LAZY và EAGER*
 
 ### 2.3.4. Annotation @ManyToOne và @JoinColumn
 
@@ -266,6 +278,8 @@ Trong quan hệ hai chiều (bidirectional), JPA cần biết **bên nào sở h
 | Xóa lớp | Xóa lớp (sinh viên trong lớp sẽ được set class_id = NULL) |
 | Xem sinh viên theo lớp | Xem danh sách sinh viên thuộc một lớp cụ thể |
 
+*Bảng 3.1: Chức năng quản lý lớp học*
+
 **Quản lý Sinh viên:**
 
 | Chức năng | Mô tả |
@@ -275,6 +289,8 @@ Trong quan hệ hai chiều (bidirectional), JPA cần biết **bên nào sở h
 | Thêm sinh viên | Nhập thông tin và chọn lớp từ dropdown |
 | Sửa thông tin sinh viên | Cập nhật thông tin hoặc chuyển lớp |
 | Xóa sinh viên | Xóa sinh viên khỏi hệ thống |
+
+*Bảng 3.2: Chức năng quản lý sinh viên*
 
 ## 3.2. Sơ đồ luồng xử lý
 
@@ -367,6 +383,8 @@ ClassroomRepository.deleteById()
 | class_code | NVARCHAR(50) | NOT NULL, UNIQUE | Mã lớp (duy nhất) |
 | class_name | NVARCHAR(255) | NOT NULL | Tên lớp học |
 
+*Bảng 3.3: Cấu trúc bảng Classes*
+
 **Bảng Students:**
 
 | Cột | Kiểu dữ liệu | Ràng buộc | Mô tả |
@@ -376,6 +394,8 @@ ClassroomRepository.deleteById()
 | full_name | NVARCHAR(255) | NOT NULL | Họ và tên |
 | email | NVARCHAR(255) | NOT NULL | Địa chỉ email |
 | class_id | BIGINT | FK, NULL | Khóa ngoại → Classes(id) |
+
+*Bảng 3.4: Cấu trúc bảng Students*
 
 ### 3.3.3. Ràng buộc khóa ngoại và hành vi khi xóa
 
@@ -546,6 +566,8 @@ server.port=8080
 | `create` | Xóa và tạo lại schema mỗi lần khởi động |
 | `create-drop` | Tạo khi start, xóa khi stop |
 
+*Bảng 4.1: Các giá trị của thuộc tính ddl-auto*
+
 ## 4.4. Mô tả Entity (Trọng tâm đề tài)
 
 > ⚠️ **HƯỚNG DẪN VẼ UML CLASS DIAGRAM:**
@@ -664,6 +686,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 | `findByEmailEndingWith(String domain)` | `WHERE email LIKE '%?'` |
 | `findByClassroomIdOrderByFullNameAsc(Long id)` | `WHERE class_id = ? ORDER BY full_name ASC` |
 | `countByClassroomId(Long id)` | `SELECT COUNT(*) WHERE class_id = ?` |
+
+*Bảng 4.2: Quy tắc đặt tên method trong Spring Data JPA*
 
 ## 4.6. Mô tả Service
 
@@ -947,6 +971,8 @@ Các trang khác nhúng fragment bằng:
 | 9 | **Xóa lớp → SET NULL** | [http://localhost:8080/classes](http://localhost:8080/classes) | Xóa lớp KTPM01. Chụp thông báo xác nhận. Sau đó vào `/students` chụp SV004 hiện badge "Chưa gán lớp". |
 | 10 | **Console Hibernate SQL** | Trong cửa sổ CMD/IntelliJ | Chụp console khi ứng dụng chạy, thấy các câu lệnh Hibernate SQL log ra. |
 
+*Bảng 5.1: Danh sách các màn hình demo*
+
 ### 5.1.1. Bố trí ảnh trong báo cáo (gợi ý)
 
 | Vị trí trong báo cáo | Ảnh cần chèn |
@@ -962,6 +988,8 @@ Các trang khác nhúng fragment bằng:
 | Sau mô tả xóa lớp | Ảnh số 9a — Xác nhận xóa + 9b — SV bị gỡ lớp |
 | Trong phần JPA/Hibernate | Ảnh số 10 — Console log Hibernate SQL |
 
+*Bảng 5.2: Bố trí ảnh trong báo cáo*
+
 ## 5.2. Cách chạy chương trình
 
 **Bước 1:** Mở SQL Server Management Studio, chạy toàn bộ file `init-db.sql`
@@ -971,15 +999,25 @@ Các trang khác nhúng fragment bằng:
 spring.datasource.password=<mật_khẩu_SQL_Server_của_bạn>
 ```
 
-**Bước 3:** Mở Command Prompt tại thư mục `De_Tai_PT_Web_JavaEE`, chạy:
-```bash
-mvnw spring-boot:run
+**Bước 3:** Mở Command Prompt **MỚI** tại thư mục `De_Tai_PT_Web_JavaEE`, chạy:
+```cmd
+.\mvnw.cmd spring-boot:run
 ```
-> Hoặc mở IntelliJ IDEA → `File → Open` → chọn folder `De_Tai_PT_Web_JavaEE` → Run `ClassroomManagementApplication.java`
+> ⚠️ **Lưu ý:** Phải mở cửa sổ CMD riêng vì lệnh này chiếm terminal (chạy server). Không tắt cửa sổ này trong lúc dùng.
+> 
+> **Cách khác (PowerShell):** `Start-Process -FilePath ".\mvnw.cmd" -ArgumentList "spring-boot:run" -WindowStyle Normal`
+>
+> **Hoặc dùng IntelliJ IDEA:** `File → Open` → chọn folder `De_Tai_PT_Web_JavaEE` → Run `ClassroomManagementApplication.java`
 
 **Bước 4:** Chờ đến khi console hiện `Tomcat started on port 8080 (http)`
 
 **Bước 5:** Mở trình duyệt → truy cập `http://localhost:8080`
+
+**Tắt server:**
+```cmd
+netstat -ano | findstr :8080
+taskkill /PID <PID> /F
+```
 
 ---
 
@@ -998,6 +1036,8 @@ mvnw spring-boot:run
 | Giao diện Bootstrap responsive | ✅ Hoàn thành |
 | Mapping @OneToMany và @ManyToOne | ✅ Hoàn thành |
 | Sử dụng @JoinColumn, mappedBy, cascade | ✅ Hoàn thành |
+
+*Bảng 6.1: Kết quả thực hiện các yêu cầu đề tài*
 
 **Về mặt lý thuyết**, nhóm đã hiểu và trình bày được:
 - Sự khác biệt giữa mô hình quan hệ (SQL) và mô hình đối tượng (Java).
@@ -1018,6 +1058,8 @@ mvnw spring-boot:run
 | GlobalExceptionHandler | Bắt `DataIntegrityViolationException` (mã trùng) |
 | `@Transactional` | Service layer |
 
+*Bảng 6.2: Cải tiến đã triển khai (V1.1)*
+
 ## 6.3. Cải tiến V1.2 (Phase 2)
 
 | Cải tiến | Kỹ thuật |
@@ -1027,6 +1069,8 @@ mvnw spring-boot:run
 | Tránh N+1 (lớp) | `ClassroomSummaryDto` + `SIZE(c.students)` |
 | Tránh N+1 (SV) | `@EntityGraph(attributePaths = "classroom")` |
 | Flyway | `db/migration/V1`, `V2`; `ddl-auto=validate` |
+
+*Bảng 6.3: Cải tiến V1.2 (Phase 2)*
 
 ## 6.4. Hạn chế còn lại
 
@@ -1046,6 +1090,8 @@ mvnw spring-boot:run
 
 Flyway: `V3__add_teachers.sql`, `V4__add_subjects.sql`, `V5__add_grades_and_class_teacher.sql`
 
+*Bảng 6.4: Cải tiến V1.3 (Phase 3)*
+
 ## 6.6. Cải tiến V1.4 (Phase 4–5)
 
 | Cải tiến | Mô tả |
@@ -1055,6 +1101,8 @@ Flyway: `V3__add_teachers.sql`, `V4__add_subjects.sql`, `V5__add_grades_and_clas
 | Docker | `docker-compose` (SQL Server + app) |
 | CI | GitHub Actions build + test |
 | Actuator | Health endpoint |
+
+*Bảng 6.5: Cải tiến V1.4 (Phase 4-5)*
 
 ## 6.7. Hướng phát triển tiếp
 

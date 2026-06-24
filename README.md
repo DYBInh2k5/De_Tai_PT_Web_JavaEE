@@ -232,18 +232,34 @@ spring.datasource.password=1    # ← Sửa mật khẩu SQL Server của bạn 
 
 ### Bước 3: Chạy ứng dụng
 
-**Cách 1 — Maven Wrapper (khuyên dùng, không cần cài Maven):**
-```bash
-mvnw spring-boot:run
+**Cách 0 — File .bat (dễ nhất, khuyên dùng):**
+```cmd
+# Double-click file "chay.bat" trong thư mục De_Tai_PT_Web_JavaEE
+# (hoặc gõ trong CMD:)
+chay.bat
 ```
-> Lần đầu chạy sẽ hơi chậm vì Maven tải dependencies. Kiên nhẫn chờ.
+> Mở cửa sổ CMD riêng và tự động chạy server. Để tắt: đóng cửa sổ hoặc nhấn `Ctrl + C`.
 
-**Cách 2 — Maven (đã cài Maven toàn cục):**
+**Cách 1 — Command Prompt (giữ cửa sổ chạy):**
+```cmd
+# Mở Command Prompt MỚI (Windows), gõ:
+cd /d D:\path\to\De_Tai_PT_Web_JavaEE
+.\mvnw.cmd spring-boot:run
+```
+> ⚠️ **Quan trọng:** Mở cửa sổ CMD riêng, vì lệnh này chiếm terminal. Đừng tắt cửa sổ đó — đó là server. Muốn tắt server: nhấn `Ctrl + C` trong cửa sổ đó.
+
+**Cách 2 — PowerShell (Start-Process):**
+```powershell
+Start-Process -FilePath ".\mvnw.cmd" -ArgumentList "spring-boot:run" -WindowStyle Normal
+```
+> Mở cửa sổ CMD mới tự động chạy server.
+
+**Cách 3 — Maven (đã cài Maven toàn cục):**
 ```bash
 mvn spring-boot:run
 ```
 
-**Cách 3 — IDE (IntelliJ IDEA / VS Code):**
+**Cách 4 — IDE (IntelliJ IDEA / VS Code):**
 - Mở project trong IntelliJ IDEA.
 - Chuột phải file `ClassroomManagementApplication.java` → **Run 'ClassroomManagementApplication'**
 - Hoặc click nút ▶ xanh cạnh `public static void main`.
@@ -252,6 +268,14 @@ mvn spring-boot:run
 ```
 Tomcat started on port 8080 (http)
 Started ClassroomManagementApplication in X.XXX seconds
+```
+
+**Tắt server:**
+```cmd
+# Cách 1: Nhấn Ctrl + C trong cửa sổ CMD đang chạy server
+# Cách 2: Nếu không tìm thấy cửa sổ, dùng:
+netstat -ano | findstr :8080
+taskkill /PID <PID> /F
 ```
 Sau dòng này là có thể truy cập được.
 
