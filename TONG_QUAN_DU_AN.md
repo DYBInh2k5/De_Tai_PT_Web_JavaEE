@@ -63,6 +63,7 @@ De_Tai_PT_Web_JavaEE/
     ├── HUONG_DAN_SLIDE.md           ← Hướng dẫn làm PowerPoint
     ├── HUONG_DAN_CHAY_VA_DEMO.md    ← Hướng dẫn chạy + demo từng chức năng
     ├── HUONG_DAN_KET_NOI_SQLSERVER.md ← Setup SQL Server
+    ├── VAN_BAN_THUYET_TRINH.md      ← Script thuyết trình 11 slide
     └── HUONG_DAN_NOP_BAI.md         ← Checklist nộp bài
 ```
 

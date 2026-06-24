@@ -8,7 +8,7 @@
 |---|---|---|
 | 1 | `Bao_Cao_Nhom_XX.docx` | Tự làm từ `docs/BAO_CAO_CHI_TIET.md` |
 | 2 | `Bao_Cao_Nhom_XX.pdf` | Export từ Word |
-| 3 | `Thuyet_Trinh_Nhom_XX.pptx` | Tự làm theo `docs/HUONG_DAN_SLIDE.md` |
+| 3 | `Thuyet_Trinh_Nhom_XX.pptx` | Tự làm theo `docs/HUONG_DAN_SLIDE.md` + script mẫu `docs/VAN_BAN_THUYET_TRINH.md` |
 | 4 | Source code (folder zip) | Toàn bộ project |
 | 5 | `init-db.sql` | Có sẵn trong project root |
 | 6 | `README.md` | Có sẵn trong project root |

@@ -1,5 +1,5 @@
 ﻿    # HƯỚNG DẪN LÀM SLIDE THUYẾT TRÌNH (.pptx)
-## 10 slide — khoảng 8–12 slide theo yêu cầu đề bài
+## 11 slide (10 nội dung + Cảm ơn) — khoảng 8–12 slide theo yêu cầu đề bài
 
 ---
 
