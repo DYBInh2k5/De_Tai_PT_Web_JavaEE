@@ -1,190 +1,145 @@
-# Văn Bản Thuyết Trình — Đề Tài 07
+# Văn Bản Thuyết Trình — 8 slide (10 phút)
 
-## Slide 1: Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate
+## Slide 1: Giới Thiệu Đề Tài & Mục Tiêu (30 giây)
 
 Kính chào quý thầy cô và các bạn!
 
-Tôi là **Võ Duy Bình**, nhóm trưởng của nhóm thực hiện bài tập lớn này. Cùng với các thành viên **Nguyễn Vũ Minh Huy** và **Trần Bá Lợi**, chúng tôi đã hoàn thành đề tài: *"Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate qua ứng dụng quản lý lớp học"*.
+Tôi là **Võ Duy Bình**, nhóm trưởng nhóm đề tài 07. Thành viên gồm **Nguyễn Vũ Minh Huy** và **Trần Bá Lợi**, dưới sự hướng dẫn của **thầy Phan Hồng Trung**, học kỳ 2 năm học 2024-2025, Trường Đại Học Hoa Sen.
 
-Bài tập này được thực hiện dưới sự hướng dẫn của **thầy Phan Hồng Trung**, trong học kỳ 2 năm học 2024-2025, tại **Trường Đại Học Hoa Sen, Khoa Công Nghệ**.
+Đề tài của chúng tôi: **Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate qua ứng dụng quản lý lớp học.**
 
----
+Bài toán demo: Xây dựng ứng dụng Web quản lý lớp học và sinh viên với Spring Boot, JPA/Hibernate, SQL Server và Bootstrap.
 
-## Slide 2: Mục Tiêu Đề Tài
-
-Nhóm đã đặt ra **bốn mục tiêu chính** để đảm bảo bài tập lớn vừa có chiều sâu lý thuyết, vừa có giá trị thực hành:
-
-**Thứ nhất:** Hiểu rõ quan hệ thực thể — nắm vững quan hệ One-to-Many và Many-to-One trong JPA/Hibernate, biết cách chúng hoạt động trong thực tế.
-
-**Thứ hai:** Thành thạo các annotation — sử dụng chính xác các annotation như `@OneToMany`, `@ManyToOne`, `@JoinColumn`, `mappedBy`, và `cascade` để ánh xạ quan hệ.
-
-**Thứ ba:** Xây dựng ứng dụng hoàn chỉnh — phát triển ứng dụng quản lý lớp học và sinh viên với Spring Boot kết nối SQL Server.
-
-**Thứ tư:** Thực hiện CRUD đầy đủ — hoàn thành các chức năng Create, Read, Update, Delete với giao diện Bootstrap responsive.
+Bốn mục tiêu chính:
+1. Hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate
+2. Thành thạo các annotation @OneToMany, @ManyToOne, @JoinColumn, mappedBy, cascade
+3. Xây dựng ứng dụng quản lý lớp học với Spring Boot và SQL Server
+4. Hoàn thành CRUD với giao diện Bootstrap
 
 ---
 
-## Slide 3: Công Nghệ Sử Dụng
+## Slide 2: Công Nghệ Chính — JPA/Hibernate (1.5 phút)
 
-Ứng dụng của chúng tôi được xây dựng trên nền tảng công nghệ hiện đại:
+**Vấn đề:** Khi lập trình Java kết nối database, chúng ta gặp sự không tương thích giữa mô hình quan hệ (bảng SQL) và mô hình đối tượng (Java class). Đây gọi là **Object-Relational Impedance Mismatch**. Ví dụ: bảng Students có class_id là khóa ngoại, nhưng trong Java chúng ta muốn có `Student.getClassroom()` trả về đối tượng Classroom thay vì một con số.
 
-| Công nghệ | Vai trò |
-|-----------|---------|
-| Spring Boot 3.2.5 | Backend framework chính |
-| Spring Data JPA | ORM để tương tác với database |
-| Hibernate | JPA implementation |
-| SQL Server 2019 | Cơ sở dữ liệu quan hệ |
-| Thymeleaf | Template engine để tạo View |
-| Bootstrap 5 | Giao diện Web responsive |
-| Lombok | Giảm boilerplate Java code |
+**JPA/Hibernate giải quyết thế nào?** JPA là specification, Hibernate là implementation. Nó ánh xạ bảng thành Java Entity class qua annotation. Lập trình viên làm việc với object, không cần viết SQL thủ công.
 
----
+**Khác biệt so với cách làm thông thường:**
+- Thông thường: Viết JDBC, tạo Connection, PreparedStatement, ResultSet, tự map từng cột
+- Với JPA: Chỉ cần `@Entity`, `@OneToMany`, `@ManyToOne`, gọi `repository.findAll()`
 
-## Slide 4: Tổng Quan Quan Hệ One-to-Many / Many-to-One
+**Vị trí trong hệ thống:** Tầng Persistence — Service gọi Repository, Repository dùng Hibernate để truy vấn SQL Server.
 
-Mô hình quan hệ giữa hai thực thể **Classroom** (Lớp học) và **Student** (Sinh viên) là nền tảng của toàn bộ ứng dụng.
-
-**Phía "Một" — Classroom:**
-Một lớp học có thể chứa nhiều sinh viên. Annotation `@OneToMany` được đặt ở đây với thuộc tính `mappedBy`. Lớp này có khóa chính `id`, các trường `classCode` và `className`, và một danh sách `List<Student>`.
-
-**Phía "Nhiều" — Student:**
-Mỗi sinh viên chỉ thuộc về một lớp học. Annotation `@ManyToOne` được đặt ở đây cùng `@JoinColumn`. Lớp này có khóa chính `id`, các trường `studentCode`, `fullName`, `email`, và khóa ngoại `class_id` trỏ đến `Classes(id)`.
-
-**Owning Side vs Inverse Side:**
-- **Owning Side:** Student (chứa `@JoinColumn`) — bên chứa khóa ngoại, quản lý quan hệ trong database
-- **Inverse Side:** Classroom (chứa `mappedBy`) — bên chỉ đọc dữ liệu, không quản lý FK
+**Công nghệ bổ trợ:** Spring Boot (Backend), Thymeleaf (View), Bootstrap (UI), Lombok (giảm boilerplate).
 
 ---
 
-## Slide 5: Thiết Kế Cơ Sở Dữ Liệu
+## Slide 3: Phân Tích Chức Năng & Thiết Kế Hệ Thống (1.5 phút)
 
-Hệ thống sử dụng hai bảng quan hệ với ràng buộc toàn vẹn tham chiếu.
+### Chức năng chính
+Ứng dụng có 5 chức năng: CRUD lớp học, CRUD sinh viên, gán sinh viên vào lớp, lọc sinh viên theo lớp, xem số lượng sinh viên từng lớp.
 
-**Bảng Classes:**
+### Kiến trúc MVC
+Ứng dụng tuân thủ mô hình MVC:
 
-| Cột | Kiểu | Ràng buộc |
-|-----|------|-----------|
-| id | BIGINT | Khóa chính, tự tăng |
-| class_code | NVARCHAR(50) | Mã lớp, duy nhất, không null |
-| class_name | NVARCHAR(255) | Tên lớp, không null |
+- **Controller:** `ClassroomController`, `StudentController` — nhận HTTP request, gọi Service
+- **Service:** `ClassroomService`, `StudentService` — xử lý logic nghiệp vụ
+- **Repository:** `ClassroomRepository`, `StudentRepository` — truy vấn database qua JPA
+- **Entity:** `Classroom`, `Student` — ánh xạ bảng Classes, Students
+- **View:** Thymeleaf templates — hiển thị HTML + Bootstrap
 
-**Bảng Students:**
+### Thiết kế cơ sở dữ liệu
 
-| Cột | Kiểu | Ràng buộc |
-|-----|------|-----------|
-| id | BIGINT | Khóa chính, tự tăng |
-| student_code | NVARCHAR(50) | Mã sinh viên, duy nhất, không null |
-| full_name | NVARCHAR(255) | Họ tên, không null |
-| email | NVARCHAR(255) | Email, không null |
-| class_id | BIGINT | Khóa ngoại trỏ đến `Classes(id)`, `ON DELETE SET NULL` |
+**Bảng Classes:** id (PK, IDENTITY), class_code (NVARCHAR, UNIQUE), class_name (NVARCHAR)
 
-Khi một lớp bị xóa, các sinh viên của lớp đó sẽ có `class_id` được set thành **NULL**, thay vì bị xóa theo.
+**Bảng Students:** id (PK, IDENTITY), student_code (NVARCHAR, UNIQUE), full_name (NVARCHAR), email (NVARCHAR), class_id (BIGINT, FK → Classes.id, ON DELETE SET NULL)
+
+Khi xóa một lớp, class_id của sinh viên được set NULL thay vì xóa sinh viên — giữ lại dữ liệu, tránh mất thông tin.
 
 ---
 
-## Slide 6: Kiến Trúc Chương Trình (MVC)
+## Slide 4: Cài Đặt Kỹ Thuật Quan Trọng (1.5 phút)
 
-Ứng dụng tuân thủ mô hình **MVC (Model-View-Controller)** với sự phân tầng rõ ràng:
+### Luồng MVC + Thymeleaf (bắt buộc)
+Lấy chức năng **xem danh sách lớp học** làm ví dụ:
 
-**Tầng 1 — Giao diện Người Dùng:**
-Trình duyệt tương tác với HTML/Bootstrap được tạo bởi Thymeleaf.
+1. Trình duyệt gõ `http://localhost:8080/classes`
+2. `ClassroomController.findAll()` nhận request
+3. Controller gọi `ClassroomService.getAllClassrooms()`
+4. Service gọi `ClassroomRepository.findAll()` — Hibernate sinh SQL: `SELECT * FROM Classes`
+5. Repository trả về `List<Classroom>`
+6. Controller đưa vào Model: `model.addAttribute("classrooms", list)`
+7. Controller trả về tên view `"class-list"`
+8. Thymeleaf đọc `class-list.html`, dùng `th:each="c : ${classrooms}"` để lặp, `th:text="${c.className}"` để hiển thị tên lớp
+9. Trình duyệt nhận HTML hoàn chỉnh
 
-**Tầng 2 — Controller & Service:**
-`ClassroomController` và `StudentController` xử lý HTTP requests, gọi các Service để xử lý logic nghiệp vụ.
-
-**Tầng 3 — Repository & Persistence:**
-Hibernate/JPA tương tác với SQL Server (ClassroomDB) để lưu trữ và truy xuất dữ liệu.
-
-Mỗi tầng có trách nhiệm riêng biệt: Controller xử lý HTTP, Service chứa logic nghiệp vụ, Repository truy xuất dữ liệu, và View hiển thị giao diện người dùng.
-
----
-
-## Slide 7: Mapping JPA — Annotation Chi Tiết
-
-Đây là phần quan trọng nhất — cách ánh xạ quan hệ bằng annotation.
-
-**Phía "Một" — Classroom.java:**
+### Entity Mapping (2 annotation chính)
 ```java
-@OneToMany(mappedBy = "classroom",
-            cascade = {PERSIST, MERGE},
-            fetch = LAZY)
+// Classroom.java
+@OneToMany(mappedBy = "classroom", cascade = {PERSIST, MERGE})
 private List<Student> students;
-```
 
-**Phía "Nhiều" — Student.java:**
-```java
-@ManyToOne(fetch = FetchType.LAZY)
+// Student.java
+@ManyToOne
 @JoinColumn(name = "class_id")
 private Classroom classroom;
 ```
 
-**Giải thích chi tiết:**
+**Student** là owning side (có `@JoinColumn` — quản lý khóa ngoại). **Classroom** là inverse side (có `mappedBy` — chỉ phản chiếu). Cascade PERSIST + MERGE giúp đồng bộ dữ liệu khi lưu hoặc cập nhật.
 
-- `mappedBy = "classroom"` — Chỉ định Student là owning side. Hibernate không tạo thêm cột FK ở bảng Classes.
-- `@JoinColumn(name = "class_id")` — Ánh xạ cột khóa ngoại `class_id` trong bảng Students trỏ đến `Classes(id)`.
-- `cascade = {PERSIST, MERGE}` — Không dùng REMOVE vì database dùng ON DELETE SET NULL. Nếu dùng REMOVE, sẽ xung đột với hành vi xóa của database.
-- `fetch = LAZY` — Tải dữ liệu khi cần thiết, tối ưu hiệu suất.
-
----
-
-## Slide 8: Demo Các Chức Năng Ứng Dụng
-
-Ứng dụng của chúng tôi cung cấp **5 chức năng chính:**
-
-1. **CRUD Lớp Học:**
-   Người dùng có thể thêm, sửa, xóa và xem danh sách lớp học.
-
-2. **CRUD Sinh Viên:**
-   Người dùng có thể thêm, sửa, xóa và xem danh sách sinh viên.
-
-3. **Gán Sinh Viên Vào Lớp:**
-   Khi thêm hoặc sửa sinh viên, người dùng chọn lớp từ dropdown để liên kết đúng lớp học.
-
-4. **Lọc Sinh Viên Theo Lớp:**
-   Dropdown filter hiển thị sinh viên của lớp được chọn, giúp dễ dàng quản lý.
-
-5. **Xem Số Lượng Sinh Viên:**
-   Badge hiển thị số lượng sinh viên của mỗi lớp, cung cấp cái nhìn tổng quan nhanh.
+### Cấu hình database
+```
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=ClassroomDB
+spring.jpa.hibernate.ddl-auto=update
+```
 
 ---
 
-## Slide 9: Kết Quả Đạt Được & Bài Học Kinh Nghiệm
+## Slide 5: Demo Chương Trình (3 phút)
 
-**✅ Kết Quả Đạt Được:**
-- Hoàn thành đủ 5 chức năng bắt buộc
-- Hiểu và vận dụng được `@OneToMany` / `@ManyToOne`
-- Ứng dụng chạy ổn định, có giao diện Bootstrap responsive
-- CRUD hoàn chỉnh kết nối SQL Server thực tế
-- Nắm vững khái niệm owning side, inverse side, mappedBy, cascade
+Chạy live ứng dụng tại `http://localhost:8080`:
 
-**⚠️ Khó Khăn / Hạn Chế:**
-- Cấu hình SQL Server Authentication và TCP/IP lần đầu gặp khó khăn
-- Hiểu đúng owning side và cách Hibernate cập nhật khóa ngoại
-- Chưa có validation nâng cao (chỉ dùng HTML required)
-- Chưa có phân trang khi dữ liệu lớn
-- Chưa có tìm kiếm nâng cao
+1. **Danh sách lớp học** — thấy 2 lớp, mỗi lớp có badge số SV
+2. **Thêm lớp mới** — nhập mã + tên, lưu, quay lại danh sách thấy lớp mới
+3. **Danh sách sinh viên** — tên lớp hiển thị trong cột Lớp học
+4. **Thêm sinh viên** — chọn lớp từ dropdown, lưu, kiểm tra
+5. **Lọc sinh viên theo lớp** — chọn lớp từ dropdown, chỉ hiển thị SV lớp đó
 
-Nhóm đã hoàn thành mục tiêu đề ra và sẵn sàng tiếp thu ý kiến đóng góp từ thầy/cô và các bạn!
+Chứng minh SQL Server: Mở SSMS, chạy `SELECT * FROM Students WHERE class_id = 1` thấy dữ liệu khớp.
 
 ---
 
-## Slide 10: Kết Luận & Hướng Phát Triển
+## Slide 6: Kết Quả & Khó Khăn (2 phút)
 
-**Kết Luận:**
-- Đề tài giúp hiểu rõ cách JPA/Hibernate ánh xạ quan hệ giữa các bảng sang mô hình đối tượng Java
-- Nắm vững quan hệ One-to-Many và Many-to-One trong thực tế quản lý lớp học
-- Áp dụng được các annotation `@OneToMany`, `@ManyToOne`, `@JoinColumn`, `mappedBy`, `cascade`
-- Xây dựng được ứng dụng Web hoàn chỉnh với Spring Boot + SQL Server + Bootstrap
+**Đã hoàn thành:**
+- CRUD lớp học, CRUD sinh viên, gán SV vào lớp, lọc, đếm số SV
+- Ứng dụng chạy ổn định, giao diện Bootstrap responsive
+- Kết nối SQL Server thực tế qua Hibernate/JPA
 
-**Hướng Phát Triển:**
-- Thêm Spring Validation (`@Valid`) kiểm tra dữ liệu đầu vào
-- Thêm phân trang với Spring Data Pageable
-- Thêm tìm kiếm sinh viên theo tên
-- Thêm Spring Security đăng nhập / phân quyền
+**Khó khăn:**
+- Cấu hình SQL Server Authentication (mixed mode, bật TCP/IP)
+- Hiểu owning side và cách Hibernate cập nhật khóa ngoại
+
+**Hạn chế và hướng khắc phục:**
+- Chưa có validation nâng cao → thêm `@Valid` + `BindingResult`
+- Chưa có phân trang → thêm `Pageable`
+- Chưa có tìm kiếm → thêm `@Query` + form search
 
 ---
 
-## Slide 11: Cảm Ơn & Câu Hỏi
+## Slide 7: Kết Luận & Hướng Phát Triển
+
+**Kết luận:** Đề tài giúp hiểu rõ cách JPA/Hibernate ánh xạ quan hệ One-to-Many và Many-to-One giữa bảng Classes và Students sang Java Entity. Nắm vững các annotation `@OneToMany`, `@ManyToOne`, `@JoinColumn`, `mappedBy`, `cascade`. Xây dựng được ứng dụng Spring Boot hoàn chỉnh kết nối SQL Server.
+
+**Hướng phát triển:**
+1. Spring Validation (`@Valid`) kiểm tra dữ liệu đầu vào
+2. Phân trang với Spring Data Pageable
+3. Tìm kiếm sinh viên theo tên
+4. Spring Security đăng nhập / phân quyền
+
+---
+
+## Slide 8: Cảm Ơn & Câu Hỏi
 
 Cảm ơn quý thầy cô và các bạn đã lắng nghe!
 
@@ -192,4 +147,4 @@ Rất mong nhận được ý kiến đóng góp và câu hỏi từ các bạn.
 
 ---
 
-*Đây là văn bản thuyết trình hoàn chỉnh cho tất cả 12 slide. Bạn có thể điều chỉnh tốc độ, nhấn mạnh, hoặc thêm ví dụ cụ thể khi thuyết trình trực tiếp. Chúc bạn thuyết trình thành công!*
+*Tổng thời lượng: 10 phút (30s + 1.5p + 1.5p + 1.5p + 3p + 2p).*
