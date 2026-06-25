@@ -112,6 +112,24 @@ SQL Server (ClassroomDB)
 
 Thymeleaf Templates → View (HTML + Bootstrap)
 
+**Luồng request MVC + Thymeleaf (bắt buộc):**
+
+Vẽ luồng chi tiết cho chức năng **xem danh sách lớp học**:
+
+```
+1. GET /classes
+2. ClassroomController.findAll()          ← nhận request
+3. → ClassroomService.getAllClassrooms()  ← Service layer
+4. → ClassroomRepository.findAll()        ← JPA sinh SQL
+5. ← List<Classroom>                      ← kết quả từ DB
+6. model.addAttribute("classrooms", list) ← đưa vào Model
+7. return "class-list"                    ← tên View
+8. class-list.html dùng th:each, th:text  ← Thymeleaf render
+9. Trình duyệt nhận HTML hoàn chỉnh
+```
+
+> ⚠️ **Đây là nội dung bắt buộc theo thông báo mục 3 (MVC + Thymeleaf).**
+
 ---
 
 ## Slide 7 — Mapping JPA (Trọng tâm)

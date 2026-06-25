@@ -114,6 +114,18 @@ Hibernate/JPA tương tác với SQL Server (ClassroomDB) để lưu trữ và t
 
 Mỗi tầng có trách nhiệm riêng biệt: Controller xử lý HTTP, Service chứa logic nghiệp vụ, Repository truy xuất dữ liệu, và View hiển thị giao diện người dùng.
 
+**Luồng request MVC + Thymeleaf — ví dụ xem danh sách lớp học:**
+
+1. Trình duyệt gõ `http://localhost:8080/classes`
+2. `ClassroomController.findAll()` nhận request HTTP GET
+3. Controller gọi `ClassroomService.getAllClassrooms()` — tầng Service xử lý nghiệp vụ
+4. Service gọi `ClassroomRepository.findAll()` — Repository tạo truy vấn SQL qua JPA
+5. Hibernate sinh câu lệnh: `SELECT * FROM Classes` và trả về `List<Classroom>`
+6. Controller đưa dữ liệu vào **Model**: `model.addAttribute("classrooms", list)`
+7. Controller trả về tên View: `"class-list"` — Thymeleaf tìm file `class-list.html`
+8. Thymeleaf đọc `class-list.html`, dùng `th:each="c : ${classrooms}"` để lặp danh sách và `th:text="${c.className}"` để hiển thị tên lớp
+9. Trình duyệt nhận HTML hoàn chỉnh và render giao diện
+
 ---
 
 ## Slide 8: Mapping JPA — Annotation Chi Tiết
