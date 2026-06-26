@@ -1,6 +1,10 @@
 # Giải Thích Tổng Hợp — Đề Tài 07
 ## Dùng cho thuyết trình và trả lời câu hỏi (15 phút)
 
+### Phong cách trình bày
+
+Vừa chiếu slide, vừa chạy demo live, vừa mở code. Mỗi slide có 1-2 lần **WINDOW: INTELLIJ / SSMS / TRÌNH DUYỆT** để chuyển cửa sổ. Chi tiết trong `VAN_BAN_THUYET_TRINH.md`.
+
 ---
 
 ## 1. Công Nghệ Chính: JPA/Hibernate
@@ -220,18 +224,24 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.SQLServer2016Diale
 
 ---
 
-## 8. Demo — Các Tình Huống Cần Chạy
+## 8. Demo — Các Tình Huống Cần Chạy (Slide+Demo+Code)
 
-Demo **sống** (không dùng ảnh chụp), mở SSMS song song để chứng minh:
+> **Phong cách:** Vừa nói, vừa chiếu slide, vừa chạy demo live, vừa chỉ code. Mỗi bước có WINDOW để biết chuyển sang cửa sổ nào.
 
-| Thứ tự | Chức năng | Cách demo |
+**Cần mở sẵn:**
+- Slide (fullscreen)
+- IntelliJ (project tree + file code)
+- Trình duyệt → `http://localhost:8080`
+- SSMS → query `ClassroomDB`
+
+| Thứ tự | Chức năng | Demo + Code |
 |---|---|---|
-| 1 | Danh sách lớp | Vào `/classes` — thấy 2 lớp + badge số SV |
-| 2 | Thêm lớp | `/classes/add` → nhập mã/tên → lưu → về danh sách thấy lớp mới |
-| 3 | DS sinh viên | `/students` — cột "Lớp học" hiển thị tên lớp (bằng th:text) |
-| 4 | Thêm SV + chọn lớp | `/students/add` — dropdown chọn lớp → lưu → kiểm tra |
-| 5 | Lọc theo lớp | `/students?classId=1` — chỉ SV lớp 1 |
-| 6 | Xóa lớp | Xóa 1 lớp → SSMS kiểm tra class_id SV bị SET NULL |
+| 1 | Danh sách lớp | **WINDOW: TRÌNH DUYỆT** → `/classes` — badge số SV<br>**WINDOW: INTELLIJ** → `class-list.html:53` (`.students.size()`) |
+| 2 | Thêm lớp | **WINDOW: TRÌNH DUYỆT** → `/classes/add` → nhập CNTT02 → Lưu<br>**WINDOW: SSMS** → `SELECT * FROM Classes` |
+| 3 | DS sinh viên | **WINDOW: TRÌNH DUYỆT** → `/students` — cột "Lớp học" hiển thị tên lớp<br>**WINDOW: INTELLIJ** → chỉ `student.classroom.className` |
+| 4 | Thêm SV + chọn lớp | **WINDOW: TRÌNH DUYỆT** → `/students/add` — dropdown chọn lớp<br>**WINDOW: INTELLIJ** → `student-form.html:67-73` (dropdown `th:each` + `th:selected`) |
+| 5 | Lọc theo lớp | **WINDOW: TRÌNH DUYỆT** → `/students?classId=1`<br>**WINDOW: INTELLIJ** → `StudentRepository.java:24` (`findByClassroomId`)<br>**WINDOW: SSMS** → `SELECT * FROM Students WHERE class_id = 1` |
+| 6 | Xóa lớp | **WINDOW: TRÌNH DUYỆT** → xóa 1 lớp<br>**WINDOW: SSMS** → kiểm tra `class_id` SV bị SET NULL |
 
 ---
 

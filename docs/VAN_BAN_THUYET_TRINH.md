@@ -1,137 +1,223 @@
-﻿# Văn Bản Thuyết Trình — Vừa Chiếu Slide vừa Demo Live
+﻿# Văn Bản Thuyết Trình — Vừa chiếu slide, vừa chạy demo, vừa chỉ code
+
+> **Tổng thời gian:** 10 phút (7 phút slide + 3 phút demo lồng ghép)
+> **Cần mở sẵn:** Trình duyệt (http://localhost:8080), IntelliJ (project), SSMS (ClassroomDB)
 
 ---
 
-## Slide 1: Trang bìa
+## Slide 1 — Trang bìa (30s)
 
-**Nói:**
+**WINDOW: SLIDE**
+
 Xin chào thầy cô và các bạn. Nhóm em xin trình bày đề tài: "Tìm hiểu quan hệ One-to-Many và Many-to-One trong JPA/Hibernate qua ứng dụng quản lý lớp học".
 
-Nhóm gồm: Võ Duy Bình, Nguyễn Vũ Minh Huy, Trần Bá Lợi — dưới sự hướng dẫn của thầy Phan Hồng Trung.
+Nhóm gồm: Võ Duy Bình, Nguyễn Vũ Minh Huy, Trần Bá Lợi — GVHD thầy Phan Hồng Trung, Học kỳ 2 năm học 2024-2025.
 
 ---
 
-## Slide 2: Mục tiêu
+## Slide 2 — Mục tiêu (30s)
 
-**Nói:**
-Bốn mục tiêu chính: hiểu quan hệ One-to-Many và Many-to-One, thành thạo annotation, xây dựng ứng dụng Spring Boot, hoàn thành CRUD với Bootstrap.
+**WINDOW: SLIDE**
 
-**Thao tác:** Chuyển slide nhanh, không dừng lâu.
-
----
-
-## Slide 3: Giới thiệu & Lý do
-
-**Nói:**
-Vấn đề cốt lõi là Object-Relational Impedance Mismatch — sự khác biệt giữa bảng SQL và object Java. JPA/Hibernate giải quyết điều này bằng cách ánh xạ bảng thành Entity. Đây cũng là công nghệ chính của đề tài.
+Bốn mục tiêu: hiểu quan hệ One-to-Many/Many-to-One, thành thạo annotation, xây dựng ứng dụng Spring Boot + SQL Server, CRUD + Bootstrap.
 
 ---
 
-## Slide 4: Công nghệ
+## Slide 3 — Giới thiệu & Lý do (30s)
 
-**Nói:**
+**WINDOW: SLIDE**
+
+Vấn đề: Object-Relational Impedance Mismatch — bảng SQL khác object Java. JPA/Hibernate ánh xạ bảng → Entity, giải quyết sự không tương thích này.
+
+---
+
+## Slide 4 — Công nghệ (15s)
+
+**WINDOW: SLIDE**
+
 Spring Boot, JPA/Hibernate, SQL Server, Thymeleaf, Bootstrap, Lombok.
 
-**Thao tác:** Lướt qua bảng công nghệ, chuyển nhanh.
+---
+
+## Slide 5 — Tổng quan quan hệ (1.5 phút)
+
+**WINDOW: SLIDE**
+
+Quan hệ giữa Classroom và Student — một lớp có nhiều SV, mỗi SV thuộc một lớp.
+Student là owning side (giữ FK `class_id`). Classroom là inverse side (`mappedBy`).
+
+**WINDOW: INTELLIJ**
+
+Mở `src/main/java/com/ttjavaee/classroom/entity/Classroom.java`
+
+> Chỉ dòng 55: `@OneToMany(mappedBy = "classroom")` — đây là phía "Một", mappedBy cho biết bên kia là chủ quan hệ.
+
+Mở `src/main/java/com/ttjavaee/classroom/entity/Student.java`
+
+> Chỉ dòng 59-61: `@ManyToOne` + `@JoinColumn(name = "class_id")` — đây là phía "Nhiều", `@JoinColumn` chỉ định cột FK trong DB.
+> Student là owning side vì nó chứa khóa ngoại.
+
+**WINDOW: SLIDE** (quay lại)
 
 ---
 
-## Slide 5: Tổng quan quan hệ One-to-Many / Many-to-One
+## Slide 6 — Thiết kế CSDL (1 phút)
 
-**Nói:**
-Đây là nội dung trọng tâm. Quan hệ giữa Classroom và Student — một lớp có nhiều sinh viên, mỗi sinh viên thuộc một lớp.
+**WINDOW: SLIDE**
 
-**Hành động — MỞ CODE:**
-- Mở `entity/Classroom.java` — chỉ vào dòng 55: `@OneToMany(mappedBy = "classroom")`
-- Mở `entity/Student.java` — chỉ vào dòng 59-61: `@ManyToOne` + `@JoinColumn(name = "class_id")`
+Bảng Classes: id (PK), class_code (UNIQUE), class_name.
+Bảng Students: id (PK), student_code (UNIQUE), full_name, email, class_id (FK → Classes.id).
+ON DELETE SET NULL — xóa lớp thì class_id SV thành NULL, giữ lại SV.
 
-**Nói tiếp:**
-Student là owning side — giữ khóa ngoại `class_id`. Classroom là inverse side — chỉ phản chiếu qua `mappedBy`.
+**WINDOW: SSMS**
 
----
+Chạy: `SELECT * FROM Classes` → thấy dữ liệu
+Chạy: `SELECT * FROM Students` → thấy class_id liên kết
 
-## Slide 6: Thiết kế CSDL
-
-**Nói:**
-Hai bảng: Classes (id, class_code, class_name) và Students (id, student_code, full_name, email, class_id FK). ON DELETE SET NULL — xóa lớp thì class_id của SV được set NULL, không mất dữ liệu SV.
-
-**Hành động — MỞ SSMS:**
-- `SELECT * FROM Classes`
-- `SELECT * FROM Students`
+**WINDOW: SLIDE** (quay lại)
 
 ---
 
-## Slide 7: Kiến trúc MVC
+## Slide 7 — Kiến trúc MVC (1 phút)
+
+**WINDOW: SLIDE**
+
+MVC 3 tầng: Controller → Service → Repository → DB. Thymeleaf làm View.
+
+**WINDOW: INTELLIJ**
+
+Mở `controller/ClassroomController.java`
+
+> Chỉ dòng 38-44: `listClasses()` — nhận GET `/classes`, gọi Service, đưa `model.addAttribute("classes", list)`, trả về `"class-list"`.
+
+Mở `templates/class-list.html`
+
+> Chỉ dòng 44: `th:each="classroom : ${classes}"` — Thymeleaf lặp danh sách từ Model.
+> Chỉ dòng 53: `<span th:text="${classroom.students.size()}">` — hiển thị số SV, thể hiện quan hệ @OneToMany.
 
 **Nói:**
-Ứng dụng tuân thủ MVC 3 tầng: Controller → Service → Repository → DB. Thymeleaf làm View.
+Luồng: URL → Controller → Model → View → HTML. Đây là MVC + Thymeleaf.
 
-**Hành động — MỞ CODE để chạy luồng:**
-- Mở `controller/ClassroomController.java` — chỉ dòng 38-44: `GET /classes` → `model.addAttribute("classes", ...)` → `return "class-list"`
-- Mở `templates/class-list.html` — chỉ dòng 44: `th:each="classroom : ${classes}"` và dòng 53: badge `classroom.students.size()`
-
-**Nói:**
-Đây là luồng từ URL `/classes` → Controller đưa list vào Model → Thymeleaf render HTML qua `th:each` và `th:text`.
+**WINDOW: SLIDE** (quay lại)
 
 ---
 
-## Slide 8: Mapping JPA
+## Slide 8 — Mapping JPA (1 phút)
 
-**Nói:**
-Hai annotation quyết định quan hệ: `@OneToMany(mappedBy)` ở Classroom và `@ManyToOne` + `@JoinColumn` ở Student.
+**WINDOW: SLIDE**
 
-**Hành động — QUAY LẠI CODE:**
-- Vẫn là 2 file entity ở Slide 5 — giải thích thêm cascade và fetch
-- `cascade = {PERSIST, MERGE}`: lưu Classroom thì Student tự đồng bộ
-- Không dùng REMOVE vì DB đã có `ON DELETE SET NULL`
-- `fetch = LAZY`: chỉ tải danh sách SV khi gọi `.getStudents()`
+Hai annotation chính: `@OneToMany(mappedBy)` và `@ManyToOne` + `@JoinColumn`.
 
----
+**WINDOW: INTELLIJ**
 
-## Slide 9: Demo — BẮT ĐẦU CHẠY
+Quay lại `Classroom.java` và `Student.java`
 
-**Tổng quan:** 5 chức năng chính. Mở trình duyệt, mở SSMS song song.
+> `cascade = {PERSIST, MERGE}`: lưu/merge Classroom thì Student tự đồng bộ.
+> Không dùng REMOVE vì DB có `ON DELETE SET NULL` — nếu dùng sẽ xung đột.
+> `fetch = LAZY`: chỉ tải danh sách SV khi cần (`getStudents()`).
 
-### Demo 1: Danh sách lớp
-- Vào `http://localhost:8080/classes`
-- **Nói:** Thấy 2 lớp, mỗi lớp có badge số SV (dùng `classroom.students.size()`)
-
-### Demo 2: Thêm lớp mới
-- `/classes/add` → nhập mã CNTT02, tên "Công nghệ thông tin 02" → Lưu
-- **Nói:** Quay lại danh sách thấy lớp mới. Đây là POST `/classes/save` → `ClassroomController.saveClass()`
-
-### Demo 3: Danh sách sinh viên
-- `/students` — cột "Lớp học" hiển thị tên lớp (không phải ID)
-- **Hành động — MỞ CODE:** `templates/student-list.html` — chỉ `student.classroom.className`
-
-### Demo 4: Thêm SV + chọn lớp
-- `/students/add` — nhập thông tin, chọn lớp từ dropdown → Lưu
-- **Hành động — MỞ CODE:** `templates/student-form.html` dòng 67-73 — dropdown `th:each="c : ${classes}"` và `th:selected`
-
-### Demo 5: Lọc SV theo lớp
-- `/students?classId=1` — chỉ hiển thị SV của lớp 1
-- **Hành động — MỞ CODE:** `repository/StudentRepository.java` dòng 24 — `findByClassroomId()` — Spring Data JPA tự sinh `WHERE class_id = ?`
-
-### Chứng minh SQL Server
-- **Chuyển sang SSMS:** `SELECT * FROM Students WHERE class_id = 1` — dữ liệu khớp
+**WINDOW: SLIDE** (quay lại)
 
 ---
 
-## Slide 10: Kết quả & Khó khăn
+## Slide 9 — Demo: Chạy 5 chức năng (3 phút)
 
-**Nói:**
-Đã hoàn thành 5 chức năng. Khó khăn khi cấu hình SQL Server Authentication và hiểu owning side. Hạn chế: thiếu validation, phân trang, tìm kiếm.
+> **WINDOW: TRÌNH DUYỆT** là chính. Mở code khi cần minh họa.
+
+### 9.1. Danh sách lớp
+
+Vào `http://localhost:8080/classes`
+
+> Nói: Thấy danh sách lớp, badge xanh hiển thị số SV — dùng `.students.size()` bên Java.
+
+**WINDOW: INTELLIJ** → `class-list.html` dòng 53 (badge)
+
+**WINDOW: TRÌNH DUYỆT** → quay lại
+
+### 9.2. Thêm lớp mới
+
+Click "Thêm Lớp mới" → nhập CNTT02, Công nghệ thông tin 02 → Lưu
+
+> Nói: POST `/classes/save` → `ClassroomController.saveClass()` → `Service.saveClassroom()` → `Repository.save()` → Hibernate sinh `INSERT INTO Classes`
+
+**WINDOW: SSMS** → `SELECT * FROM Classes` thấy dòng mới
+
+**WINDOW: TRÌNH DUYỆT** → quay lại
+
+### 9.3. Danh sách SV
+
+Vào `/students` — thấy cột "Lớp học" hiển thị tên lớp (không phải ID)
+
+> Nói: Đây là nhờ `student.classroom.className` trong Thymeleaf — đi qua quan hệ @ManyToOne.
+
+### 9.4. Thêm SV + chọn lớp
+
+Click "Thêm Sinh viên" → nhập thông tin → chọn lớp từ dropdown → Lưu
+
+**WINDOW: INTELLIJ** → `student-form.html` dòng 67-73
+
+> Chỉ dropdown: `th:each="c : ${classes}"` lặp danh sách lớp, `th:selected` tự chọn lớp hiện tại, `name="classroomId"` gửi ID lớp lên Controller.
+
+**WINDOW: SSMS** → `SELECT * FROM Students` thấy SV mới có class_id
+
+**WINDOW: TRÌNH DUYỆT** → quay lại
+
+### 9.5. Lọc SV theo lớp
+
+Chọn lớp từ dropdown filter → chỉ hiển thị SV của lớp đó (URL: `/students?classId=1`)
+
+**WINDOW: INTELLIJ** → `repository/StudentRepository.java` dòng 24
+
+> Chỉ `findByClassroomId(Long)` — Spring Data JPA tự sinh `SELECT * FROM Students WHERE class_id = ?`. Không cần viết SQL.
+
+**WINDOW: SSMS** → `SELECT * FROM Students WHERE class_id = 1` — dữ liệu khớp hoàn toàn.
+
+### 9.6. Xóa lớp (chứng minh ON DELETE SET NULL)
+
+Vào `/classes`, xóa lớp CNTT02 vừa tạo.
+
+**WINDOW: SSMS** → `SELECT * FROM Students WHERE class_id = (SELECT id FROM Classes WHERE class_code = 'CNTT02')` — hoặc kiểm tra SV trước đó có class_id thành NULL.
+
+> Nói: Đây là ON DELETE SET NULL — SV không bị xóa, chỉ mất liên kết lớp.
+
+**WINDOW: TRÌNH DUYỆT** → `/classes` thấy lớp đã biến mất
 
 ---
 
-## Slide 11: Kết luận & Hướng phát triển
+## Slide 10 — Kết quả & Khó khăn (1 phút)
 
-**Nói:**
-Nắm vững @OneToMany, @ManyToOne, @JoinColumn, mappedBy, cascade. Hướng phát triển: thêm @Valid, Pageable, tìm kiếm, Spring Security.
+**WINDOW: SLIDE**
+
+**Đã làm được:**
+- CRUD lớp + SV, gán SV vào lớp, lọc, đếm số SV
+- Ứng dụng Spring Boot chạy ổn định kết nối SQL Server
+- Hiểu @OneToMany, @ManyToOne, @JoinColumn, mappedBy, cascade
+
+**Khó khăn:**
+- Cấu hình SQL Server Authentication + bật TCP/IP
+- Hiểu owning side và cách Hibernate cập nhật FK
+
+**Hạn chế + hướng khắc phục:**
+- Chưa validation nâng cao → thêm `@Valid`
+- Chưa phân trang → thêm `Pageable`
+- Chưa tìm kiếm → thêm `@Query`
 
 ---
 
-## Slide 12: Cảm ơn
+## Slide 11 — Kết luận & Hướng phát triển (30s)
 
-**Nói:**
-Cảm ơn thầy cô và các bạn đã lắng nghe. Rất mong nhận được câu hỏi góp ý.
+**WINDOW: SLIDE**
+
+Nắm vững JPA/Hibernate mapping. Hướng phát triển: Spring Validation, phân trang, tìm kiếm, Spring Security.
+
+---
+
+## Slide 12 — Cảm ơn (15s)
+
+**WINDOW: SLIDE**
+
+Cảm ơn thầy cô và các bạn. Rất mong nhận được góp ý và câu hỏi!
+
+---
+
+> **Gợi ý:** Cử 1 thành viên điều khiển slide, 1 thành viên nói + demo. Mở sẵn 3 cửa sổ: slide (fullscreen), IntelliJ (thu nhỏ 1/2 màn hình), trình duyệt + SSMS (nửa còn lại).
