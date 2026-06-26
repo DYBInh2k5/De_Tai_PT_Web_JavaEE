@@ -254,6 +254,54 @@ Nguyên nhân thường gặp: SQL Server chưa bật TCP/IP, sai mật khẩu, 
 
 ---
 
+## 11. Các File Code Quan Trọng — Vị Trí và Vai Trò
+
+Dưới đây là danh sách các file code quan trọng nhất, vị trí và dòng code cần nhớ để trả lời câu hỏi:
+
+### Entity (JPA Mapping — Quan trọng nhất)
+
+| # | File | Vai trò | Dòng quan trọng |
+|---|---|---|---|
+| 1 | `entity/Classroom.java:55` | `@OneToMany(mappedBy = "classroom")` — phía "Một" | `mappedBy` chỉ định Student là owning side |
+| 2 | `entity/Student.java:59-61` | `@ManyToOne` + `@JoinColumn(name = "class_id")` — phía "Nhiều" | Cột FK `class_id` trong bảng Students |
+
+### Repository (Truy xuất DB)
+
+| # | File | Vai trò | Dòng quan trọng |
+|---|---|---|---|
+| 3 | `repository/ClassroomRepository.java` | CRUD lớp học kế thừa từ `JpaRepository` | Không có method tùy chỉnh |
+| 4 | `repository/StudentRepository.java:24` | `findByClassroomId(Long)` — Spring Data JPA tự sinh `WHERE class_id = ?` | Method query tự động, không cần `@Query` |
+
+### Service (Logic nghiệp vụ)
+
+| # | File | Vai trò |
+|---|---|---|
+| 5 | `service/ClassroomService.java` | Gọi `ClassroomRepository` — CRUD lớp |
+| 6 | `service/StudentService.java` | Gọi `StudentRepository` — CRUD SV + lọc theo lớp |
+
+### Controller (MVC — Luồng request)
+
+| # | File | Vai trò | Dòng quan trọng |
+|---|---|---|---|
+| 7 | `controller/ClassroomController.java:38-44` | `GET /classes` — `model.addAttribute("classes", ...)` → `return "class-list"` | MVC flow mẫu: Model → View |
+| 8 | `controller/StudentController.java` | `GET /students?classId=...` — lọc SV + `model.addAttribute("classes", ...)` | Gửi danh sách lớp vào dropdown |
+
+### View (Thymeleaf)
+
+| # | File | Vai trò | Dòng quan trọng |
+|---|---|---|---|
+| 9 | `templates/class-list.html:44-54` | `th:each="classroom : ${classes}"` + `th:text` + badge `classroom.students.size()` | Lặp danh sách, hiển thị quan hệ OneToMany |
+| 10 | `templates/student-form.html:67-73` | Dropdown chọn lớp: `th:each="c : ${classes}"` + `th:selected` | Gán SV vào lớp qua form |
+
+### Config
+
+| # | File | Vai trò |
+|---|---|---|
+| 11 | `application.properties` | Kết nối SQL Server, `ddl-auto=update`, `show-sql=true` |
+| 12 | `pom.xml` | Dependencies: spring-boot-starter-data-jpa, thymeleaf, lombok, sqlserver driver |
+
+---
+
 ## 10. Những Điều KHÔNG Nên Làm
 
 - Không đọc lại toàn bộ lý thuyết trong báo cáo
